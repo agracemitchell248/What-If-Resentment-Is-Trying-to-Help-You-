@@ -1,0 +1,16 @@
+[[headers]]
+  for = "/*.mp3"
+  [headers.values]
+    Content-Type = "audio/mpeg"
+    Accept-Ranges = "bytes"
+
+[[headers]]
+  for = "/*.m4a"
+  [headers.values]
+    Content-Type = "audio/mp4"
+    Accept-Ranges = "bytes"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "no-cache"
