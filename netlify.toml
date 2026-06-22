@@ -14,3 +14,9 @@
   for = "/*.html"
   [headers.values]
     Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/*.mp4"
+  [headers.values]
+    Content-Type = "video/mp4"
+    Accept-Ranges = "bytes"
