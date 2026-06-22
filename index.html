@@ -2,1067 +2,1109 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UnBroken | Boundaries & Energy Management</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>UnBroken | Boundaries &amp; Energy Management</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    font-size: 16px;
-    line-height: 1.6;
-    background: #203445;
-    min-height: 100vh;
-    padding: 20px;
-  }
-  .container {
-    max-width: 800px;
-    margin: 0 auto;
-    background: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    padding: 30px;
-    color: #203445;
-  }
-  /* Progress */
-  .progress-header { margin-bottom: 24px; }
-  .progress-label { display: flex; justify-content: space-between; font-size: 13px; color: #6c757d; margin-bottom: 8px; }
-  .progress-bar-track { background: #e9ecef; border-radius: 4px; height: 8px; overflow: hidden; }
-  .progress-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #5da0af, #acc95d);
-    border-radius: 4px;
-    transition: width 0.4s ease;
-  }
-  /* Steps */
-  .step-section { display: none; }
-  .step-section.active { display: block; }
-  /* Typography */
-  h1 { font-size: 1.8rem; color: #203445; margin-bottom: 12px; line-height: 1.3; }
-  h2 { font-size: 1.3rem; color: #203445; margin-bottom: 12px; margin-top: 24px; }
-  h3 { font-size: 1.1rem; color: #203445; margin-bottom: 10px; }
-  p { margin-bottom: 14px; color: #203445; }
-  /* Module tag */
-  .module-tag {
-    display: inline-block;
-    background: #5da0af;
-    color: white;
-    font-size: 12px;
-    font-weight: 600;
-    padding: 4px 12px;
-    border-radius: 20px;
-    margin-bottom: 16px;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-  }
-  /* Boxes */
-  .box-key-concept {
-    border-left: 4px solid #dfb852;
-    background: #fef9f2;
-    padding: 18px 20px;
-    border-radius: 0 6px 6px 0;
-    margin: 20px 0;
-  }
-  .box-reflect {
-    border-left: 4px solid #d56439;
-    background: #f8f9fa;
-    padding: 18px 20px;
-    border-radius: 0 6px 6px 0;
-    margin: 20px 0;
-  }
-  .box-assessment {
-    border-left: 4px solid #5da0af;
-    background: #e8f4f6;
-    padding: 18px 20px;
-    border-radius: 0 6px 6px 0;
-    margin: 20px 0;
-  }
-  .box-gentle {
-    background: #e8f4f6;
-    padding: 16px 20px;
-    border-radius: 6px;
-    margin: 16px 0;
-    font-size: 0.95rem;
-    color: #4a6fa5;
-  }
-  .box-insight {
-    background: linear-gradient(135deg, #203445, #2d5068);
-    color: white;
-    padding: 20px 24px;
-    border-radius: 8px;
-    margin: 20px 0;
-  }
-  .box-insight h3 { color: white; }
-  .box-insight p { color: rgba(255,255,255,0.9); }
-  .box-next {
-    border-left: 4px solid #acc95d;
-    background: #f0f9f7;
-    padding: 16px 20px;
-    border-radius: 0 6px 6px 0;
-    margin: 20px 0;
-  }
-  .box-quote {
-    border-left: 4px solid #5da0af;
-    background: #e8f4f6;
-    padding: 16px 20px;
-    border-radius: 0 6px 6px 0;
-    margin: 20px 0;
-    font-style: italic;
-  }
-  /* Textarea */
-  textarea {
-    width: 100%;
-    min-height: 120px;
-    padding: 12px;
-    border: 1px solid #dee2e6;
-    border-radius: 6px;
-    font-family: inherit;
-    font-size: 15px;
-    line-height: 1.5;
-    resize: vertical;
-    color: #203445;
-    background: white;
-    margin-top: 8px;
-  }
-  textarea:focus { outline: none; border-color: #5da0af; box-shadow: 0 0 0 3px rgba(93,160,175,0.15); }
-  /* Helper toggle */
-  .helper-toggle {
-    color: #5da0af;
-    cursor: pointer;
-    font-size: 0.9rem;
-    display: block;
-    margin-top: 8px;
-    text-decoration: underline;
-    background: none;
-    border: none;
-    padding: 0;
-  }
-  .helper-content { display: none; margin-top: 10px; padding: 12px; background: #f0f9f7; border-radius: 6px; font-size: 0.9rem; color: #555; }
-  .helper-content.open { display: block; }
-  /* Energy sliders */
-  .energy-dimension { margin: 20px 0; }
-  .energy-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-  .energy-name { font-weight: 600; color: #203445; }
-  .energy-score { font-size: 1.2rem; font-weight: 700; color: #5da0af; min-width: 32px; text-align: right; }
-  input[type="range"] {
-    width: 100%;
-    height: 6px;
-    -webkit-appearance: none;
-    appearance: none;
-    background: linear-gradient(90deg, #5da0af, #acc95d);
-    border-radius: 3px;
-    outline: none;
-    margin-bottom: 6px;
-  }
-  input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 20px; height: 20px;
-    border-radius: 50%;
-    background: #203445;
-    cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  }
-  .range-labels { display: flex; justify-content: space-between; font-size: 12px; color: #6c757d; }
-  /* Energy bar visual */
-  .energy-bar-container { margin: 6px 0; }
-  .energy-bar-track { background: #e9ecef; border-radius: 4px; height: 12px; overflow: hidden; }
-  .energy-bar-fill { height: 100%; background: linear-gradient(90deg, #5da0af, #acc95d); border-radius: 4px; transition: width 0.4s ease; }
-  /* Meditation player */
-  .meditation-player {
-    background: linear-gradient(135deg, #203445, #2d5068);
-    border-radius: 10px;
-    padding: 24px;
-    margin: 20px 0;
-    color: white;
-  }
-  .meditation-player h3 { color: white; margin-bottom: 4px; }
-  .meditation-player .subtitle { color: rgba(255,255,255,0.7); font-size: 0.9rem; margin-bottom: 16px; }
-  .med-controls { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
-  .med-play-btn {
-    width: 52px; height: 52px;
-    border-radius: 50%;
-    background: #5da0af;
-    border: none;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    transition: background 0.2s;
-  }
-  .med-play-btn:hover { background: #4a8a9a; }
-  .med-play-btn svg { width: 22px; height: 22px; fill: white; }
-  .med-time { color: rgba(255,255,255,0.8); font-size: 0.9rem; min-width: 80px; }
-  .med-progress-track { flex: 1; background: rgba(255,255,255,0.2); border-radius: 3px; height: 6px; cursor: pointer; }
-  .med-progress-fill { height: 100%; background: linear-gradient(90deg, #5da0af, #acc95d); border-radius: 3px; transition: width 0.1s linear; }
-  .med-script-box { background: rgba(255,255,255,0.1); border-radius: 6px; padding: 14px; margin-top: 12px; font-size: 0.9rem; color: rgba(255,255,255,0.9); line-height: 1.6; min-height: 80px; }
-  .med-phase-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: #5da0af; margin-bottom: 6px; }
-  /* Boundary cards */
-  .boundary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
-  @media (max-width: 600px) { .boundary-grid { grid-template-columns: 1fr; } }
-  .boundary-card {
-    border: 2px solid #e9ecef;
-    border-radius: 8px;
-    padding: 16px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .boundary-card:hover { border-color: #5da0af; background: #f0fafd; }
-  .boundary-card.selected { border-color: #5da0af; background: #e8f4f6; }
-  .boundary-card h4 { font-size: 0.95rem; color: #203445; margin-bottom: 6px; }
-  .boundary-card p { font-size: 0.85rem; color: #6c757d; margin: 0; }
-  /* Resentment map */
-  .resentment-item { background: #f8f9fa; border-radius: 8px; padding: 16px; margin: 12px 0; border-left: 4px solid #d56439; }
-  /* Buttons */
-  .btn-primary {
-    background: linear-gradient(135deg, #5da0af, #4a8a9a);
-    color: white;
-    border: none;
-    padding: 14px 32px;
-    border-radius: 6px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: inline-block;
-    margin-top: 20px;
-  }
-  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(93,160,175,0.4); }
-  .btn-secondary {
-    background: white;
-    color: #5da0af;
-    border: 2px solid #5da0af;
-    padding: 12px 28px;
-    border-radius: 6px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: inline-block;
-    margin-top: 20px;
-    margin-right: 12px;
-  }
-  .btn-secondary:hover { background: #e8f4f6; }
-  .btn-download {
-    background: linear-gradient(135deg, #203445, #2d5068);
-    color: white;
-    border: none;
-    padding: 14px 32px;
-    border-radius: 6px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    width: 100%;
-    margin-top: 12px;
-    transition: all 0.2s;
-  }
-  .btn-download:hover { background: linear-gradient(135deg, #1a2b38, #203445); }
-  .nav-buttons { display: flex; justify-content: space-between; align-items: center; margin-top: 28px; padding-top: 20px; border-top: 1px solid #e9ecef; }
-  /* Divider */
-  hr { border: none; border-top: 1px solid #e9ecef; margin: 24px 0; }
-  /* Score result */
-  .score-result { display: none; margin-top: 20px; }
-  .score-badge { display: inline-block; padding: 6px 16px; border-radius: 20px; font-weight: 700; font-size: 1rem; margin-bottom: 12px; }
-  .badge-strong { background: #acc95d; color: #203445; }
-  .badge-moderate { background: #dfb852; color: #203445; }
-  .badge-depleted { background: #d56439; color: white; }
-  /* Checkbox list */
-  .check-list { list-style: none; padding: 0; }
-  .check-list li { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid #e9ecef; font-size: 0.95rem; }
-  .check-list li:last-child { border-bottom: none; }
-  .check-list input[type="checkbox"] { margin-top: 3px; accent-color: #5da0af; width: 16px; height: 16px; flex-shrink: 0; }
-  /* CTA */
-  .cta-box { background: linear-gradient(135deg, #203445, #2d5068); color: white; padding: 24px; border-radius: 8px; text-align: center; margin: 24px 0; }
-  .cta-box h3 { color: white; margin-bottom: 8px; }
-  .cta-box p { color: rgba(255,255,255,0.85); margin-bottom: 16px; }
-  .cta-btn { display: inline-block; background: #5da0af; color: white; padding: 12px 28px; border-radius: 6px; text-decoration: none; font-weight: 600; transition: background 0.2s; }
-  .cta-btn:hover { background: #4a8a9a; }
-  /* Footer copyright */
-  .copyright-footer { margin-top: 32px; padding-top: 20px; border-top: 1px solid #e9ecef; text-align: center; font-size: 12px; color: #6c757d; line-height: 1.8; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Viewport lock: the only three rules that matter ── */
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: oklch(22% 0.04 220);
+}
+
+/* ── Shell: rigid column, never taller than viewport ── */
+.shell {
+  display: flex;
+  flex-direction: column;
+  height: 100svh;       /* safe-area-aware: smallest viewport, chrome always showing */
+  height: 100dvh;       /* dynamic: adapts as chrome hides/shows (overrides svh if supported) */
+  max-width: 430px;
+  margin: 0 auto;
+  overflow: hidden;     /* clips any content that escapes */
+  background: oklch(99% 0.003 220);
+}
+
+/* ── Header: white background so logo shows in full color ── */
+.hdr {
+  flex-shrink: 0;
+  background: oklch(22% 0.055 223);
+  border-bottom: 1px solid oklch(28% 0.05 223);
+  padding: 8px 16px 0;
+}
+
+.hdr-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 7px;
+}
+
+.logo { height: 24px; width: auto; display: block; }
+
+.step-counter {
+  font-size: 11px;
+  font-weight: 600;
+  color: oklch(75% 0.035 210);
+  letter-spacing: 0.2px;
+}
+
+.prog-track {
+  height: 3px;
+  background: oklch(35% 0.05 220);
+  overflow: hidden;
+}
+
+.prog-fill {
+  height: 100%;
+  background: linear-gradient(90deg, oklch(62% 0.085 200), oklch(77% 0.13 125));
+  transition: width 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ── Content zone: flex child that fills remaining space, never scrolls ── */
+.content {
+  flex: 1;
+  min-height: 0;        /* CRITICAL: flex items default min-height:auto, which allows overflow */
+  overflow: hidden;     /* hard clip — no scrollbar, no scroll */
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Steps: fill the content zone exactly ── */
+.step {
+  display: none;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;        /* CRITICAL: same reason as above */
+  overflow: hidden;
+  padding: 13px 15px 6px;
+  gap: 7px;
+  animation: arrive 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.step.active { display: flex; }
+
+@keyframes arrive {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ── Nav: pinned footer ── */
+.nav {
+  flex-shrink: 0;
+  background: oklch(99.5% 0.002 220);
+  border-top: 1px solid oklch(93% 0.005 220);
+  padding: 9px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.copy {
+  flex-shrink: 0;
+  text-align: center;
+  font-size: 10px;
+  color: oklch(70% 0.02 220);
+  padding: 4px 12px 6px;
+  background: oklch(22% 0.04 220);
+  line-height: 1.5;
+}
+
+/* ── Typography ── */
+h1 {
+  font-size: clamp(1.1rem, 4.5vw, 1.3rem);
+  font-weight: 800;
+  color: oklch(22% 0.04 220);
+  line-height: 1.2;
+}
+
+h3 {
+  font-size: 0.87rem;
+  font-weight: 700;
+  color: oklch(22% 0.04 220);
+  margin-bottom: 3px;
+}
+
+p {
+  font-size: 0.83rem;
+  line-height: 1.5;
+  color: oklch(38% 0.04 220);
+}
+
+/* ── Tag ── */
+.tag {
+  display: inline-block;
+  background: oklch(62% 0.085 200);
+  color: oklch(99% 0.002 220);
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 9px;
+  border-radius: 20px;
+  letter-spacing: 0.9px;
+  text-transform: uppercase;
+  align-self: flex-start;
+  flex-shrink: 0;
+}
+
+/* ── Surfaces ── */
+.surface {
+  border-radius: 8px;
+  padding: 10px 12px;
+  flex-shrink: 0;
+}
+
+.surface-warm {
+  background: oklch(97.5% 0.012 80);
+  border: 1px solid oklch(91% 0.03 80);
+}
+
+.surface-cool {
+  background: oklch(97.5% 0.008 200);
+  border: 1px solid oklch(91% 0.02 200);
+}
+
+.surface-sage {
+  background: oklch(97% 0.012 125);
+  border: 1px solid oklch(90% 0.04 125);
+}
+
+.surface-dark {
+  background: oklch(22% 0.04 220);
+  border-radius: 8px;
+  padding: 12px 13px;
+  flex-shrink: 0;
+}
+
+.surface-dark h3 { color: oklch(98% 0.005 220); }
+.surface-dark p  { color: oklch(82% 0.015 220); font-size: 0.82rem; }
+
+.surface-mid {
+  background: oklch(30% 0.05 220);
+  border-radius: 8px;
+  padding: 11px 13px;
+  flex-shrink: 0;
+}
+.surface-mid h3 { color: oklch(98% 0.005 220); font-size: 0.87rem; }
+.surface-mid p  { color: oklch(80% 0.015 220); font-size: 0.81rem; }
+
+.surface-quote {
+  background: oklch(97.5% 0.008 200);
+  border: 1px solid oklch(91% 0.02 200);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-style: italic;
+  flex-shrink: 0;
+}
+
+.surface-gentle {
+  background: oklch(97.5% 0.008 200);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 0.81rem;
+  color: oklch(42% 0.07 200);
+  flex-shrink: 0;
+}
+
+/* ── Buttons ── */
+.btn {
+  border: none;
+  border-radius: 6px;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 10px 20px;
+  line-height: 1;
+  transition: opacity 0.15s;
+}
+.btn:hover { opacity: 0.88; }
+
+.btn-primary { background: oklch(62% 0.085 200); color: oklch(99% 0.002 220); }
+.btn-ghost   { background: transparent; color: oklch(62% 0.085 200); border: 1.5px solid oklch(62% 0.085 200); padding: 9px 18px; }
+.btn-accent  { background: oklch(77% 0.13 125); color: oklch(22% 0.04 220); font-weight: 700; font-size: 14px; padding: 12px 20px; border-radius: 6px; width: 100%; font-family: inherit; border: none; cursor: pointer; transition: opacity 0.15s; }
+.btn-accent:hover { opacity: 0.88; }
+
+/* ── Textarea: fills available space, page never scrolls ── */
+textarea {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  padding: 9px 11px;
+  border: 1.5px solid oklch(88% 0.01 220);
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.5;
+  resize: none;
+  color: oklch(22% 0.04 220);
+  background: oklch(99.5% 0.002 220);
+  overflow-y: auto;    /* text inside scrolls if typed past bounds — PAGE does not */
+}
+
+textarea:focus {
+  outline: none;
+  border-color: oklch(62% 0.085 200);
+  box-shadow: 0 0 0 3px oklch(62% 0.085 200 / 0.12);
+}
+
+/* ── Helper toggle ── */
+.helper-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  font-size: 0.77rem;
+  color: oklch(62% 0.085 200);
+  text-decoration: underline;
+  cursor: pointer;
+  align-self: flex-start;
+  flex-shrink: 0;
+}
+
+.helper-panel {
+  display: none;
+  padding: 8px 11px;
+  background: oklch(97% 0.008 160);
+  border-radius: 6px;
+  font-size: 0.79rem;
+  color: oklch(40% 0.03 220);
+  line-height: 1.5;
+  flex-shrink: 0;
+}
+.helper-panel.open { display: block; }
+
+/* ── Energy sliders ── */
+.e-row { flex-shrink: 0; }
+
+.e-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 2px;
+}
+
+.e-name { font-size: 0.82rem; font-weight: 600; color: oklch(22% 0.04 220); }
+.e-score { font-size: 0.95rem; font-weight: 700; color: oklch(62% 0.085 200); }
+.e-desc { font-size: 0.71rem; color: oklch(62% 0.03 220); margin-bottom: 3px; }
+
+input[type="range"] {
+  width: 100%;
+  height: 5px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: linear-gradient(90deg, oklch(62% 0.085 200), oklch(77% 0.13 125));
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 17px; height: 17px;
+  border-radius: 50%;
+  background: oklch(22% 0.04 220);
+  cursor: pointer;
+  box-shadow: 0 1px 3px oklch(0% 0 0 / 0.22);
+}
+
+.range-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px;
+  color: oklch(66% 0.02 220);
+  margin-top: 1px;
+}
+
+.e-bar-track { height: 4px; background: oklch(91% 0.005 220); border-radius: 2px; overflow: hidden; margin-top: 2px; }
+.e-bar-fill  { height: 100%; background: linear-gradient(90deg, oklch(62% 0.085 200), oklch(77% 0.13 125)); border-radius: 2px; transition: width 0.3s ease; }
+
+.score-result { display: none; }
+
+.score-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 0.82rem;
+  margin-bottom: 5px;
+}
+.badge-strong   { background: oklch(77% 0.13 125); color: oklch(22% 0.04 220); }
+.badge-moderate { background: oklch(77% 0.14 80);  color: oklch(22% 0.04 220); }
+.badge-depleted { background: oklch(58% 0.17 42);  color: oklch(99% 0.002 220); }
+
+/* ── 2x2 grid cards ── */
+.b-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+  flex-shrink: 0;
+}
+
+.b-card {
+  border: 1.5px solid oklch(90% 0.005 220);
+  border-radius: 8px;
+  padding: 9px 10px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  background: oklch(99.5% 0.002 220);
+}
+
+.b-card:hover  { border-color: oklch(62% 0.085 200); background: oklch(97.5% 0.008 200); }
+.b-card.chosen { border-color: oklch(62% 0.085 200); background: oklch(95.5% 0.016 200); }
+
+.b-card h4 { font-size: 0.81rem; font-weight: 700; color: oklch(22% 0.04 220); margin-bottom: 2px; }
+.b-card p  { font-size: 0.75rem; color: oklch(48% 0.03 220); margin: 0; line-height: 1.38; }
+
+/* ── Resentment items ── */
+.r-wrap { display: flex; flex-direction: column; gap: 6px; flex: 1; min-height: 0; }
+
+.r-item {
+  background: oklch(98.5% 0.007 42);
+  border: 1px solid oklch(90% 0.025 42);
+  border-radius: 8px;
+  padding: 9px 11px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  gap: 4px;
+}
+
+.r-item h4 { font-size: 0.8rem; font-weight: 700; color: oklch(56% 0.17 42); flex-shrink: 0; }
+.r-item textarea { flex: 1; min-height: 0; font-size: 13px; }
+
+/* ── Meditation player ── */
+.med {
+  background: oklch(22% 0.04 220);
+  border-radius: 9px;
+  padding: 11px 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  flex-shrink: 0;
+}
+
+.med h3       { color: oklch(98% 0.005 220); font-size: 0.85rem; }
+.med-subtitle { font-size: 0.74rem; color: oklch(70% 0.02 220); }
+
+.med-controls { display: flex; align-items: center; gap: 10px; }
+
+.med-play {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: oklch(62% 0.085 200);
+  border: none;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+.med-play:hover { background: oklch(55% 0.085 200); }
+.med-play svg   { width: 16px; height: 16px; fill: oklch(99% 0.002 220); }
+
+.med-time { font-size: 0.74rem; color: oklch(70% 0.02 220); min-width: 68px; }
+
+.med-prog-track {
+  flex: 1; background: oklch(35% 0.04 220);
+  border-radius: 3px; height: 5px; cursor: pointer;
+}
+.med-prog-fill {
+  height: 100%;
+  background: linear-gradient(90deg, oklch(62% 0.085 200), oklch(77% 0.13 125));
+  border-radius: 3px; transition: width 0.1s linear;
+}
+
+.med-reset {
+  background: oklch(32% 0.04 220); color: oklch(78% 0.015 220);
+  border: none; padding: 3px 10px; border-radius: 4px;
+  cursor: pointer; font-size: 0.74rem; font-family: inherit;
+  align-self: flex-start;
+}
+
+.med-script {
+  background: oklch(28% 0.04 220);
+  border-radius: 6px; padding: 8px 10px;
+  font-size: 0.78rem; color: oklch(86% 0.012 220); line-height: 1.52;
+}
+.med-phase {
+  font-size: 0.66rem; text-transform: uppercase;
+  letter-spacing: 0.5px; color: oklch(62% 0.085 200);
+  font-weight: 700; margin-bottom: 3px;
+}
+
+/* ── Checklist: bounded scrollable area ── */
+.check-wrap {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.check-list { list-style: none; }
+
+.check-list li {
+  display: flex; align-items: flex-start; gap: 8px;
+  padding: 6px 0; border-bottom: 1px solid oklch(93% 0.005 220);
+  font-size: 0.81rem; color: oklch(38% 0.04 220); line-height: 1.42;
+}
+.check-list li:last-child { border-bottom: none; }
+.check-list input[type="checkbox"] {
+  margin-top: 2px; accent-color: oklch(62% 0.085 200);
+  width: 14px; height: 14px; flex-shrink: 0; cursor: pointer;
+}
+
+/* ── Agenda list ── */
+.agenda { list-style: none; }
+.agenda li {
+  display: flex; align-items: flex-start; gap: 7px;
+  padding: 5px 0; border-bottom: 1px solid oklch(93% 0.005 220);
+  font-size: 0.81rem; color: oklch(38% 0.04 220); line-height: 1.4;
+}
+.agenda li:last-child { border-bottom: none; }
+.adot { color: oklch(62% 0.085 200); font-weight: 700; flex-shrink: 0; }
+
+/* ── Video CTA ── */
+.video-cta {
+  display: flex; align-items: center; gap: 10px;
+  background: oklch(22% 0.04 220); color: oklch(98% 0.005 220);
+  text-decoration: none; padding: 11px 13px; border-radius: 8px;
+  font-weight: 600; font-size: 13px;
+  transition: background 0.15s; flex-shrink: 0;
+}
+.video-cta:hover { background: oklch(28% 0.04 220); }
+.play-circle {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: oklch(62% 0.085 200);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+
+/* ── Welcome hero ── */
+.hero-icon {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: linear-gradient(135deg, oklch(25% 0.07 220), oklch(38% 0.085 200));
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 8px; flex-shrink: 0;
+}
+
+/* ── CTA link ── */
+.cta-link {
+  display: inline-block; background: oklch(62% 0.085 200);
+  color: oklch(99% 0.002 220); padding: 9px 18px;
+  border-radius: 6px; text-decoration: none; font-weight: 700;
+  font-size: 13px; transition: opacity 0.15s;
+}
+.cta-link:hover { opacity: 0.88; }
+
+/* ── Eyebrow ── */
+.eyebrow {
+  font-size: 9px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; color: oklch(70% 0.02 220);
+}
 </style>
 </head>
 <body>
-<div class="container">
+<div class="shell">
 
-  <!-- Progress -->
-  <div class="progress-header">
-    <div class="progress-label">
-      <span id="step-label">Step 1 of 10</span>
-      <span id="pct-label">10%</span>
+  <!-- ════ HEADER ════ -->
+  <div class="hdr">
+    <div class="hdr-row">
+      <img src="data:image/png;base64,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" alt="Unbroken" class="logo">
+      <span class="step-counter" id="step-ctr">Step 1 of 20</span>
     </div>
-    <div class="progress-bar-track">
-      <div class="progress-bar-fill" id="progress-bar" style="width:10%"></div>
-    </div>
-  </div>
-
-  <!-- ═══════════════════════════════════════ STEP 1 -->
-  <div class="step-section active" id="step-1">
-    <div style="text-align: center; padding: 40px 20px 28px;">
-      <!-- Leaf icon circle -->
-      <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #2d5068, #3a7a8a); display: flex; align-items: center; justify-content: center; margin: 0 auto 18px;">
-        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M17 8C8 10 5.9 16.17 3.82 19.93C3.82 19.93 7 18 12 18C17 18 21 14 21 8C21 8 19 8 17 8Z" fill="rgba(255,255,255,0.9)" stroke="rgba(255,255,255,0.6)" stroke-width="0.5"/>
-          <path d="M3.82 19.93C5 16 8 12 12 10" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>
-      </div>
-      <div style="font-size: 12px; font-weight: 700; letter-spacing: 2px; color: #5da0af; text-transform: uppercase; margin-bottom: 12px;">UnBroken</div>
-      <h1 style="font-size: 2rem; font-weight: 800; color: #203445; margin-bottom: 14px; line-height: 1.25;">What If Resentment Is<br>Trying to Help You?</h1>
-      <p style="color: #6c757d; font-size: 1rem; max-width: 460px; margin: 0 auto; line-height: 1.7;">Welcome back. The fact that you're here...still doing this work...says something important about you.</p>
-    </div>
-
-    <!-- Building on previous work -->
-    <div style="border-left: 4px solid #5da0af; background: #e8f4f6; padding: 18px 20px; border-radius: 0 6px 6px 0; margin: 8px 0 20px;">
-      <p style="font-weight: 700; color: #5da0af; margin-bottom: 8px;">Building on Your Previous Work</p>
-      <p style="margin: 0;">In the last session, you explored how guilt has been shaping your decisions...and learned to tell the difference between guilt as noise and guilt as signal. Then you watched <em>Resentment Is a Signal</em>. Now we take that further: learning to manage your energy, build the boundaries that protect it, and let your body help guide what comes next.</p>
-    </div>
-
-    <!-- In this session -->
-    <div style="background: #f8f9fa; border-radius: 6px; padding: 18px 20px; margin-bottom: 20px;">
-      <p style="font-weight: 700; color: #203445; margin-bottom: 12px;">In this session you will:</p>
-      <ul style="list-style: none; padding: 0; margin: 0;">
-        <li style="display: flex; align-items: flex-start; gap: 10px; padding: 6px 0; font-size: 0.95rem;">✦ <span>Assess where your energy actually is across four dimensions</span></li>
-        <li style="display: flex; align-items: flex-start; gap: 10px; padding: 6px 0; font-size: 0.95rem;">✦ <span>Map where resentment is pointing to unprotected energy</span></li>
-        <li style="display: flex; align-items: flex-start; gap: 10px; padding: 6px 0; font-size: 0.95rem;">✦ <span>Learn the four types of boundaries that protect your capacity</span></li>
-        <li style="display: flex; align-items: flex-start; gap: 10px; padding: 6px 0; font-size: 0.95rem;">✦ <span>Practice body-based decision making for opportunities and relationships</span></li>
-        <li style="display: flex; align-items: flex-start; gap: 10px; padding: 6px 0; font-size: 0.95rem;">✦ <span>Make one boundary commitment for the week ahead</span></li>
-      </ul>
-    </div>
-
-    <!-- Intention -->
-    <div style="border-left: 4px solid #acc95d; background: #f0f9f7; padding: 16px 20px; border-radius: 0 6px 6px 0; margin-bottom: 8px;">
-      <p style="font-weight: 700; color: #acc95d; margin-bottom: 6px; font-size: 0.9rem;">Your intention for today</p>
-      <p style="margin: 0; font-style: italic; color: #555;">You don't need to fix anything. Just notice what your body already knows.</p>
-    </div>
-
-    <div class="nav-buttons">
-      <span></span>
-      <button class="btn-primary" onclick="goToStep(2)">Continue →</button>
+    <div class="prog-track">
+      <div class="prog-fill" id="prog" style="width:5%"></div>
     </div>
   </div>
 
-  <!-- ═══════════════════════════════════════ STEP 2 -->
-  <div class="step-section" id="step-2">
-    <h1>Your Energy Right Now</h1>
-    <p>Before we talk about managing energy, we need to know where you're starting. Use these sliders to give an honest reading of each dimension today...not where you want to be, not where you used to be. Right now.</p>
-    <div class="box-assessment">
-      <h3>Personal Energy Assessment</h3>
-      <p style="font-size:0.9rem; color:#555; margin-bottom:16px;">Adapted from Schwartz & McCarthy's Energy Management Framework · <a href="https://hbr.org/2007/10/manage-your-energy-not-your-time" target="_blank" style="color:#5da0af;">Read the HBR Article</a></p>
+  <!-- ════ CONTENT ════ -->
+  <div class="content">
 
-      <!-- Physical -->
-      <div class="energy-dimension">
-        <div class="energy-label">
-          <span class="energy-name">🏃 Physical Energy</span>
-          <span class="energy-score" id="phys-score">5</span>
+    <!-- ── 1: Welcome ── -->
+    <div class="step active" id="step-1">
+      <div style="text-align:center; flex-shrink:0;">
+        <div class="hero-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+            <path d="M17 8C8 10 5.9 16.17 3.82 19.93C7 18 12 18 17 18C21 14 21 8 17 8Z" fill="oklch(97% 0.005 220 / 0.9)"/>
+            <path d="M3.82 19.93C5 16 8 12 12 10" stroke="oklch(97% 0.005 220 / 0.7)" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
         </div>
-        <p style="font-size:0.85rem; color:#555; margin-bottom:8px;">Sleep, movement, nutrition, physical capacity and vitality</p>
-        <input type="range" min="0" max="10" value="5" id="phys-slider" oninput="updateSlider('phys')">
-        <div class="range-labels"><span>Completely depleted</span><span>Fully energized</span></div>
-        <div class="energy-bar-container"><div class="energy-bar-track"><div class="energy-bar-fill" id="phys-bar" style="width:50%"></div></div></div>
+        <h1>What If Resentment Is<br>Trying to Help You?</h1>
+        <p style="font-size:0.8rem; color:oklch(52% 0.03 220); margin-top:4px;">The fact that you're here, still doing this work, says something important about you.</p>
       </div>
 
-      <!-- Emotional -->
-      <div class="energy-dimension">
-        <div class="energy-label">
-          <span class="energy-name">❤️ Emotional Energy</span>
-          <span class="energy-score" id="emot-score">5</span>
-        </div>
-        <p style="font-size:0.85rem; color:#555; margin-bottom:8px;">Sense of security, trust, connection, and emotional resilience</p>
-        <input type="range" min="0" max="10" value="5" id="emot-slider" oninput="updateSlider('emot')">
-        <div class="range-labels"><span>Completely depleted</span><span>Fully energized</span></div>
-        <div class="energy-bar-container"><div class="energy-bar-track"><div class="energy-bar-fill" id="emot-bar" style="width:50%"></div></div></div>
+      <div class="surface surface-cool" style="flex-shrink:0;">
+        <p style="font-size:0.77rem; font-weight:700; color:oklch(62% 0.085 200); margin-bottom:4px;">Building on Your Previous Work</p>
+        <p style="font-size:0.79rem; margin:0;">Last session: how guilt shapes decisions. Today: manage your energy, build protective boundaries, and let your body guide what comes next.</p>
       </div>
 
-      <!-- Mental -->
-      <div class="energy-dimension">
-        <div class="energy-label">
-          <span class="energy-name">🧠 Mental Energy</span>
-          <span class="energy-score" id="ment-score">5</span>
-        </div>
-        <p style="font-size:0.85rem; color:#555; margin-bottom:8px;">Focus, clarity, decision-making capacity, and cognitive sharpness</p>
-        <input type="range" min="0" max="10" value="5" id="ment-slider" oninput="updateSlider('ment')">
-        <div class="range-labels"><span>Completely depleted</span><span>Fully energized</span></div>
-        <div class="energy-bar-container"><div class="energy-bar-track"><div class="energy-bar-fill" id="ment-bar" style="width:50%"></div></div></div>
+      <div class="surface surface-warm" style="flex-shrink:0;">
+        <p style="font-weight:700; font-size:0.82rem; margin-bottom:6px;">In this session:</p>
+        <ul class="agenda">
+          <li><span class="adot">✦</span><span>Assess your energy across four dimensions</span></li>
+          <li><span class="adot">✦</span><span>Map where resentment points to unprotected energy</span></li>
+          <li><span class="adot">✦</span><span>Learn the four types of boundaries</span></li>
+          <li><span class="adot">✦</span><span>Practice body-based decision making</span></li>
+          <li><span class="adot">✦</span><span>Make one boundary commitment for the week</span></li>
+        </ul>
       </div>
 
-      <!-- Spiritual -->
-      <div class="energy-dimension">
-        <div class="energy-label">
-          <span class="energy-name">✨ Spiritual Energy</span>
-          <span class="energy-score" id="spir-score">5</span>
-        </div>
-        <p style="font-size:0.85rem; color:#555; margin-bottom:8px;">Sense of purpose, meaning, values alignment, and connection to what matters</p>
-        <input type="range" min="0" max="10" value="5" id="spir-slider" oninput="updateSlider('spir')">
-        <div class="range-labels"><span>Completely depleted</span><span>Fully energized</span></div>
-        <div class="energy-bar-container"><div class="energy-bar-track"><div class="energy-bar-fill" id="spir-bar" style="width:50%"></div></div></div>
+      <div class="surface surface-sage" style="margin-top:auto; flex-shrink:0;">
+        <p style="font-size:0.8rem; color:oklch(38% 0.08 125); font-style:italic; margin:0;">You don't need to fix anything. Just notice what your body already knows.</p>
       </div>
-
-      <div style="margin-top:20px; text-align:center;">
-        <button class="btn-primary" onclick="scoreEnergy()" style="margin-top:0;">See My Energy Picture</button>
-      </div>
-      <div class="score-result" id="energy-result"></div>
     </div>
 
-    <div class="nav-buttons">
-      <button class="btn-secondary" onclick="goToStep(1)">← Back</button>
-      <button class="btn-primary" onclick="goToStep(3)">Continue →</button>
-    </div>
-  </div>
+    <!-- ── 2: Energy sliders ── -->
+    <div class="step" id="step-2">
+      <span class="tag">Energy Assessment</span>
+      <h1>Your Energy Right Now</h1>
 
-  <!-- ═══════════════════════════════════════ STEP 3 -->
-  <div class="step-section" id="step-3">
-    <h1>What Depletes You. What Restores You.</h1>
-    <p>Your energy assessment gives us a snapshot. Now let's get specific...because knowing where you're low is only half the picture. The other half is understanding what's draining the tank and what fills it back up.</p>
-    <div class="box-reflect">
-      <h3>Reflection: Physical Energy</h3>
-      <p>Think about your physical energy right now...your sleep, your body, your movement. What is depleting your physical energy most during this job search? What, even one small thing, restores it?</p>
+      <div class="surface surface-cool" style="flex:1; min-height:0; overflow-y:auto; display:flex; flex-direction:column; gap:6px;">
+        <p style="font-size:0.71rem; color:oklch(62% 0.03 220); flex-shrink:0;">Schwartz &amp; McCarthy · <a href="https://hbr.org/2007/10/manage-your-energy-not-your-time" target="_blank" style="color:oklch(62% 0.085 200);">HBR Article</a></p>
+
+        <div class="e-row">
+          <div class="e-top"><span class="e-name">🏃 Physical</span><span class="e-score" id="phys-score">5</span></div>
+          <p class="e-desc">Sleep, movement, vitality</p>
+          <input type="range" min="0" max="10" value="5" id="phys-slider" oninput="updateSlider('phys')">
+          <div class="range-labels"><span>Depleted</span><span>Energized</span></div>
+          <div class="e-bar-track"><div class="e-bar-fill" id="phys-bar" style="width:50%"></div></div>
+        </div>
+
+        <div class="e-row">
+          <div class="e-top"><span class="e-name">❤️ Emotional</span><span class="e-score" id="emot-score">5</span></div>
+          <p class="e-desc">Security, trust, resilience</p>
+          <input type="range" min="0" max="10" value="5" id="emot-slider" oninput="updateSlider('emot')">
+          <div class="range-labels"><span>Depleted</span><span>Energized</span></div>
+          <div class="e-bar-track"><div class="e-bar-fill" id="emot-bar" style="width:50%"></div></div>
+        </div>
+
+        <div class="e-row">
+          <div class="e-top"><span class="e-name">🧠 Mental</span><span class="e-score" id="ment-score">5</span></div>
+          <p class="e-desc">Focus, clarity, decisions</p>
+          <input type="range" min="0" max="10" value="5" id="ment-slider" oninput="updateSlider('ment')">
+          <div class="range-labels"><span>Depleted</span><span>Energized</span></div>
+          <div class="e-bar-track"><div class="e-bar-fill" id="ment-bar" style="width:50%"></div></div>
+        </div>
+
+        <div class="e-row">
+          <div class="e-top"><span class="e-name">✨ Spiritual</span><span class="e-score" id="spir-score">5</span></div>
+          <p class="e-desc">Purpose, meaning, values</p>
+          <input type="range" min="0" max="10" value="5" id="spir-slider" oninput="updateSlider('spir')">
+          <div class="range-labels"><span>Depleted</span><span>Energized</span></div>
+          <div class="e-bar-track"><div class="e-bar-fill" id="spir-bar" style="width:50%"></div></div>
+        </div>
+
+        <button class="btn btn-primary" onclick="scoreEnergy()" style="width:100%; flex-shrink:0; margin-top:2px;">See My Energy Picture</button>
+        <div class="score-result" id="energy-result"></div>
+      </div>
+    </div>
+
+    <!-- ── 3: Physical reflection ── -->
+    <div class="step" id="step-3">
+      <span class="tag">Physical Energy</span>
+      <h1>What Depletes &amp; Restores You</h1>
+      <div class="surface surface-warm">
+        <h3>🏃 Physical</h3>
+        <p style="margin:0;">Sleep, body, movement. What's draining you most? What restores it, even slightly?</p>
+      </div>
       <textarea id="reflect-phys" placeholder="Your reflections are saved privately on your device only..."></textarea>
-      <button class="helper-toggle" onclick="toggleHelper('helper-phys')">Not sure where to start? ▾</button>
-      <div class="helper-content" id="helper-phys">
-        Consider: Are you sleeping well or lying awake with racing thoughts? Are you skipping meals? Moving your body, even a little? Physical depletion during job search is almost universal...disrupted routines, stress hormones, sitting for long stretches. Even noticing this is useful data.
+      <button class="helper-btn" onclick="toggleHelper('h-phys')">Not sure where to start? ▾</button>
+      <div class="helper-panel" id="h-phys">Lying awake with racing thoughts? Skipping meals? Physical depletion during job search is near-universal. Even noticing this is useful data.</div>
+      <div class="surface surface-sage" style="margin-top:auto;">
+        <p style="font-size:0.79rem; color:oklch(38% 0.08 125); font-weight:600; margin:0;">Next: Emotional energy →</p>
       </div>
     </div>
-    <div class="box-reflect">
-      <h3>Reflection: Emotional Energy</h3>
-      <p>Which relationships or situations drain your emotional energy most right now? And where...even briefly...do you feel something like relief or connection?</p>
+
+    <!-- ── 4: Emotional reflection ── -->
+    <div class="step" id="step-4">
+      <span class="tag">Emotional Energy</span>
+      <h1>What Depletes &amp; Restores You</h1>
+      <div class="surface surface-warm">
+        <h3>❤️ Emotional</h3>
+        <p style="margin:0;">Which relationships drain you most? Where do you find relief or connection, even briefly?</p>
+      </div>
       <textarea id="reflect-emot" placeholder="Your reflections are saved privately on your device only..."></textarea>
-      <button class="helper-toggle" onclick="toggleHelper('helper-emot')">Not sure where to start? ▾</button>
-      <div class="helper-content" id="helper-emot">
-        Think about specific people...are there conversations that leave you feeling worse? Also notice what, if anything, feels lighter. A conversation with a friend? A moment of genuine laughter? Even small islands of restoration count.
+      <button class="helper-btn" onclick="toggleHelper('h-emot')">Not sure where to start? ▾</button>
+      <div class="helper-panel" id="h-emot">Think about specific people. Are there conversations that leave you feeling worse? Notice what, if anything, feels lighter. Small islands of restoration count.</div>
+      <div class="surface surface-sage" style="margin-top:auto;">
+        <p style="font-size:0.79rem; color:oklch(38% 0.08 125); font-weight:600; margin:0;">Next: Mental energy →</p>
       </div>
     </div>
-    <div class="box-reflect">
-      <h3>Reflection: Mental Energy</h3>
-      <p>What is draining your mental clarity most right now...the decisions, the uncertainty, the constant planning? And what, even briefly, gives your mind a rest?</p>
+
+    <!-- ── 5: Mental reflection ── -->
+    <div class="step" id="step-5">
+      <span class="tag">Mental Energy</span>
+      <h1>What Depletes &amp; Restores You</h1>
+      <div class="surface surface-warm">
+        <h3>🧠 Mental</h3>
+        <p style="margin:0;">What drains your clarity most — decisions, uncertainty, constant planning? What gives your mind a rest?</p>
+      </div>
       <textarea id="reflect-ment" placeholder="Your reflections are saved privately on your device only..."></textarea>
-      <button class="helper-toggle" onclick="toggleHelper('helper-ment')">Not sure where to start? ▾</button>
-      <div class="helper-content" id="helper-ment">
-        Job search is relentless cognitive work...tailoring applications, researching companies, rehearsing answers, managing rejection. Notice where your mental load is heaviest. Also notice what gives your brain a break...even something as simple as a walk, a podcast, or a creative task that absorbs you.
+      <button class="helper-btn" onclick="toggleHelper('h-ment')">Not sure where to start? ▾</button>
+      <div class="helper-panel" id="h-ment">Job search is relentless cognitive work. Notice where your mental load is heaviest. What gives your brain a break — a walk, a podcast, something absorbing?</div>
+      <div class="surface surface-sage" style="margin-top:auto;">
+        <p style="font-size:0.79rem; color:oklch(38% 0.08 125); font-weight:600; margin:0;">Next: Spiritual energy →</p>
       </div>
     </div>
-    <div class="box-reflect">
-      <h3>Reflection: Spiritual Energy</h3>
-      <p>Job loss often attacks our sense of purpose...who we are, why what we do matters. What is most threatening your sense of meaning right now? Is there anything still connected to what matters to you?</p>
+
+    <!-- ── 6: Spiritual reflection ── -->
+    <div class="step" id="step-6">
+      <span class="tag">Spiritual Energy</span>
+      <h1>What Depletes &amp; Restores You</h1>
+      <div class="surface surface-warm">
+        <h3>✨ Spiritual</h3>
+        <p style="margin:0;">Job loss attacks our sense of purpose. What most threatens your sense of meaning right now? What still feels connected to what matters?</p>
+      </div>
       <textarea id="reflect-spir" placeholder="Your reflections are saved privately on your device only..."></textarea>
-      <button class="helper-toggle" onclick="toggleHelper('helper-spir')">Not sure where to start? ▾</button>
-      <div class="helper-content" id="helper-spir">
-        This isn't about religion. Spiritual energy is about purpose...the sense that what you do matters, that you are part of something larger than a job title. For many people, job loss severs that connection painfully. What values, people, or work still feel meaningful to you, even if they're smaller or quieter right now?
-      </div>
-    </div>
-    <div class="nav-buttons">
-      <button class="btn-secondary" onclick="goToStep(2)">← Back</button>
-      <button class="btn-primary" onclick="goToStep(4)">Continue →</button>
-    </div>
-  </div>
-
-  <!-- ═══════════════════════════════════════ STEP 4 -->
-  <div class="step-section" id="step-4">
-    <h1>Boundaries Are Energy Infrastructure</h1>
-    <p>You've already learned that resentment is a boundary signal, and that holding a boundary under pressure is one of the hardest things we do. Now let's look at the four types of boundaries that protect the four types of energy we just mapped.</p>
-    <div class="box-key-concept">
-      <h3>💡 The Four Boundary Types</h3>
-      <p>Boundaries aren't walls. They're decisions about how you spend your finite energy. When you don't have boundaries, you leak energy...constantly, invisibly...to other people's urgency, expectations, and emotions.</p>
+      <button class="helper-btn" onclick="toggleHelper('h-spir')">Not sure where to start? ▾</button>
+      <div class="helper-panel" id="h-spir">Spiritual energy isn't religion — it's purpose. The sense that what you do matters. What values, people, or work still feel meaningful, even if quieter right now?</div>
     </div>
 
-    <div class="boundary-grid">
-      <div class="boundary-card" id="bc-time">
-        <h4>⏱ Time Boundaries</h4>
-        <p>How you protect your time and schedule. When you're available, when you're not. How much time you give to the search, to others, to yourself.</p>
+    <!-- ── 7: Boundary types ── -->
+    <div class="step" id="step-7">
+      <span class="tag">Boundaries</span>
+      <h1>Boundaries Are Energy Infrastructure</h1>
+      <p style="flex-shrink:0;">Without them, you leak energy constantly — to other people's urgency, expectations, and emotions.</p>
+      <div class="b-grid">
+        <div class="b-card">
+          <h4>⏱ Time</h4>
+          <p>When you're available, when you're not. How much time goes to the search vs. yourself.</p>
+        </div>
+        <div class="b-card">
+          <h4>📱 Communication</h4>
+          <p>Who you respond to and how quickly. Draining texts, unsolicited advice.</p>
+        </div>
+        <div class="b-card">
+          <h4>💛 Emotional</h4>
+          <p>How much of others' emotional states you absorb. Whose anxiety you carry.</p>
+        </div>
+        <div class="b-card">
+          <h4>💰 Financial</h4>
+          <p>What you will and won't accept. How you communicate these limits clearly.</p>
+        </div>
       </div>
-      <div class="boundary-card" id="bc-comm">
-        <h4>📱 Communication Boundaries</h4>
-        <p>Who you respond to, how quickly, and in what way. This includes job search follow-ups, social media, texts from people who drain you, and unsolicited advice.</p>
-      </div>
-      <div class="boundary-card" id="bc-emot">
-        <h4>💛 Emotional Boundaries</h4>
-        <p>How much of other people's emotional states you absorb. Whose anxiety, disappointment, or opinions you take on as your own.</p>
-      </div>
-      <div class="boundary-card" id="bc-fin">
-        <h4>💰 Financial Boundaries</h4>
-        <p>What you will and won't spend money on, what you will and won't accept in terms of compensation or opportunities...and how you communicate these clearly.</p>
+      <div class="surface surface-cool" style="margin-top:auto;">
+        <p style="font-size:0.8rem; margin:0;">Boundaries aren't walls. They're decisions about how you spend your finite energy.</p>
       </div>
     </div>
 
-    <div class="box-reflect">
-      <h3>Where is your energy leaking most?</h3>
-      <p>Looking at these four types, which feels most unprotected right now? Where are you giving energy you don't have?</p>
+    <!-- ── 8: Energy leaks ── -->
+    <div class="step" id="step-8">
+      <span class="tag">Energy Leaks</span>
+      <h1>Where Is Your Energy Leaking?</h1>
+      <p style="flex-shrink:0;">Looking at those four types — which feels most unprotected? Where are you giving energy you don't have?</p>
       <textarea id="reflect-boundaries" placeholder="Your reflections are saved privately on your device only..."></textarea>
     </div>
-    <div class="nav-buttons">
-      <button class="btn-secondary" onclick="goToStep(3)">← Back</button>
-      <button class="btn-primary" onclick="goToStep(5)">Continue →</button>
-    </div>
-  </div>
 
-  <!-- ═══════════════════════════════════════ STEP 5 -->
-  <div class="step-section" id="step-5">
-    <h1>Where Are You Feeling Resentment?</h1>
-    <p>Resentment is a boundary signal...it points to places where your energy is being taken without your full consent. Let's use that map now.</p>
-    <div class="box-quote">
-      <p>"Resentment is like a check engine light. It doesn't tell you exactly what's wrong...but it tells you something needs attention."</p>
-      <p style="font-size:0.85rem; color:#6c757d; margin:0;">— Aimee Mitchell, UnBroken</p>
-    </div>
-
-    <h3 style="margin-top:20px;">Watch First: Resentment Is a Signal</h3>
-    <p>Before we map your resentment, take a moment to reset with this short practice.</p>
-    <div style="display:flex; justify-content:center; margin: 16px 0;">
+    <!-- ── 9: Resentment intro ── -->
+    <div class="step" id="step-9">
+      <span class="tag">Resentment Map</span>
+      <h1>Resentment Points to Unprotected Energy</h1>
+      <div class="surface-quote">
+        <p style="margin-bottom:3px;">"Resentment is like a check engine light. It doesn't tell you exactly what's wrong, but it tells you something needs attention."</p>
+        <p style="font-size:0.75rem; color:oklch(60% 0.02 220); margin:0;">— Aimee Mitchell, UnBroken</p>
+      </div>
+      <p style="flex-shrink:0;">Before we map it, take a moment to reset with this short video:</p>
       <video 
           controls 
           width="100%" 
           style="max-width:560px; border-radius:8px; display:block; margin:0 auto;">
-          <source src="resentment-signal.mp4" type="video/mp4">
+          <source src="Resentment Is A Sign.mp4" type="video/mp4">
           Your browser does not support the video tag.
         </video>
+      <p style="flex-shrink:0;">Think about where resentment has shown up recently. Next: map two instances and find what boundary each points to.</p>
+      <div class="surface-gentle" style="margin-top:auto;">🌿 You don't need to solve anything. Naming is the first step.</div>
     </div>
 
-    <p>Think about where resentment has shown up in your job search, your relationships, or your daily life recently. For each one, we'll ask: what does this resentment say about a boundary that might be needed?</p>
-
-    <div class="resentment-item">
-      <h4>Resentment #1</h4>
-      <p style="font-size:0.9rem; color:#555; margin-bottom:4px;">Where are you feeling it?</p>
-      <textarea id="resent-1a" placeholder="Your reflections are saved privately on your device only..." style="min-height:80px;"></textarea>
-      <p style="font-size:0.9rem; color:#555; margin-top:10px; margin-bottom:4px;">What does this say about a boundary you may need?</p>
-      <textarea id="resent-1b" placeholder="Your reflections are saved privately on your device only..." style="min-height:80px;"></textarea>
-    </div>
-
-    <div class="resentment-item">
-      <h4>Resentment #2 (optional)</h4>
-      <p style="font-size:0.9rem; color:#555; margin-bottom:4px;">Where are you feeling it?</p>
-      <textarea id="resent-2a" placeholder="Your reflections are saved privately on your device only..." style="min-height:80px;"></textarea>
-      <p style="font-size:0.9rem; color:#555; margin-top:10px; margin-bottom:4px;">What does this say about a boundary you may need?</p>
-      <textarea id="resent-2b" placeholder="Your reflections are saved privately on your device only..." style="min-height:80px;"></textarea>
-    </div>
-
-    <div class="box-gentle">
-      🌿 You don't need to solve this today. Naming it is the first step.
-    </div>
-    <div class="nav-buttons">
-      <button class="btn-secondary" onclick="goToStep(4)">← Back</button>
-      <button class="btn-primary" onclick="goToStep(6)">Continue →</button>
-    </div>
-  </div>
-
-  <!-- ═══════════════════════════════════════ STEP 6 -->
-  <div class="step-section" id="step-6">
-    <h1>Your Body Already Knows</h1>
-    <p>We make most of our decisions from the neck up...analyzing, weighing pros and cons, second-guessing. But your body has been tracking the truth the whole time. Before a bad job takes years off your life, your gut knows. Before a promising lead turns out to be the right one, something in you lights up.</p>
-    <div class="box-key-concept">
-      <h3>💡 Body-Based Decision Making</h3>
-      <p>Somatic signals...sensations in the body...are part of your nervous system's intelligence. The same system that sends a stress response when danger is near also sends quiet signals about alignment, safety, and fit.</p>
-      <p style="margin-bottom:0;">This practice helps you distinguish a <em>fear signal</em> (avoid this threat) from a <em>values signal</em> (this doesn't fit who I am)...and learn what a genuine YES feels like in your body.</p>
-    </div>
-    <p>The meditation below will guide you through a body scan to locate your YES and your NO signals...and then test them with a real decision or opportunity you're currently facing.</p>
-
-    <div class="meditation-player">
-      <h3>🎧 Body Knows Signals: A Guided Meditation</h3>
-      <p class="subtitle">Approx. 8 minutes · Find a quiet space · You may close your eyes</p>
-      <audio id="meditation-audio" src="body-knows-signals.mp3" preload="metadata"></audio>
-      <div class="med-controls">
-        <button class="med-play-btn" id="med-btn" onclick="toggleMeditation()">
-          <svg id="med-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-        </button>
-        <div class="med-progress-track" onclick="seekMeditation(event)" id="med-track">
-          <div class="med-progress-fill" id="med-progress" style="width:0%"></div>
+    <!-- ── 10: Resentment #1 ── -->
+    <div class="step" id="step-10">
+      <span class="tag">Resentment #1</span>
+      <h1>Map Your Resentment</h1>
+      <div class="r-wrap">
+        <div class="r-item">
+          <h4>Where are you feeling it?</h4>
+          <textarea id="resent-1a" placeholder="Your reflections are saved privately on your device only..."></textarea>
         </div>
-        <span class="med-time" id="med-time">0:00 / 8:00</span>
-      </div>
-      <div style="text-align:center; margin-bottom:12px;">
-        <button onclick="resetMeditation()" style="background:rgba(255,255,255,0.15); color:white; border:none; padding:6px 16px; border-radius:4px; cursor:pointer; font-size:0.85rem;">↺ Reset</button>
-      </div>
-      <div class="med-script-box" id="med-display">
-        <div class="med-phase-label">Ready to begin</div>
-        Press play to start the guided meditation. Find a comfortable position...seated or lying down...and allow your eyes to soften or close.
+        <div class="r-item">
+          <h4>What boundary does this point to?</h4>
+          <textarea id="resent-1b" placeholder="Your reflections are saved privately on your device only..."></textarea>
+        </div>
       </div>
     </div>
 
-    <div class="box-reflect">
-      <h3>After the Meditation: What Did You Notice?</h3>
-      <p>Where in your body did you feel your YES signal? Where did you feel your NO? Did anything surprise you?</p>
+    <!-- ── 11: Resentment #2 ── -->
+    <div class="step" id="step-11">
+      <span class="tag">Resentment #2 (optional)</span>
+      <h1>Map Your Resentment</h1>
+      <div class="r-wrap">
+        <div class="r-item">
+          <h4>Where are you feeling it?</h4>
+          <textarea id="resent-2a" placeholder="Your reflections are saved privately on your device only..."></textarea>
+        </div>
+        <div class="r-item">
+          <h4>What boundary does this point to?</h4>
+          <textarea id="resent-2b" placeholder="Your reflections are saved privately on your device only..."></textarea>
+        </div>
+      </div>
+      <p style="font-size:0.77rem; color:oklch(62% 0.02 220); flex-shrink:0; margin-top:4px;">Skip if you only had one resentment to map.</p>
+    </div>
+
+    <!-- ── 12: Meditation ── -->
+    <div class="step" id="step-12">
+      <span class="tag">Body Intelligence</span>
+      <h1>Your Body Already Knows</h1>
+      <p style="flex-shrink:0;">Before a bad opportunity costs you years, your gut knows. This practice helps you locate your YES and NO signals.</p>
+      <div class="med">
+        <h3>🎧 Body Knows Signals</h3>
+        <p class="med-subtitle">Approx. 8 min · Find a quiet space · Close your eyes</p>
+        <audio id="meditation-audio" src="body-knows-signals.mp3" preload="metadata"></audio>
+        <div class="med-controls">
+          <button class="med-play" id="med-btn" onclick="toggleMed()">
+            <svg id="med-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+          <div class="med-prog-track" onclick="seekMed(event)" id="med-track">
+            <div class="med-prog-fill" id="med-prog" style="width:0%"></div>
+          </div>
+          <span class="med-time" id="med-time">0:00 / 8:00</span>
+        </div>
+        <button onclick="resetMed()" class="med-reset">↺ Reset</button>
+        <div class="med-script" id="med-display">
+          <div class="med-phase">Ready to Begin</div>
+          Press play. Find a comfortable position and let your eyes soften or close.
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 13: Body reflection ── -->
+    <div class="step" id="step-13">
+      <span class="tag">Body Intelligence</span>
+      <h1>What Did You Notice?</h1>
+      <div class="surface surface-cool">
+        <p style="margin:0;">Somatic signals are your nervous system's intelligence. What you felt isn't imagination — it's data that belongs to you.</p>
+      </div>
+      <p style="flex-shrink:0;">Where did you feel your YES? Where did you feel NO? Did anything surprise you?</p>
       <textarea id="reflect-body" placeholder="Your reflections are saved privately on your device only..."></textarea>
     </div>
-    <div class="nav-buttons">
-      <button class="btn-secondary" onclick="goToStep(5)">← Back</button>
-      <button class="btn-primary" onclick="goToStep(7)">Continue →</button>
+
+    <!-- ── 14: Sustainable practices ── -->
+    <div class="step" id="step-14">
+      <span class="tag">Sustainable Search</span>
+      <h1>Quality of Energy &gt; Quantity of Effort</h1>
+      <p style="flex-shrink:0;">5 applications from clarity outperform 40 from desperation. Check what feels possible to try this week:</p>
+      <div class="check-wrap">
+        <ul class="check-list">
+          <li><input type="checkbox" id="sp1"><label for="sp1">Set specific "search hours" — don't let it run all day</label></li>
+          <li><input type="checkbox" id="sp2"><label for="sp2">Take one full day off from job search per week</label></li>
+          <li><input type="checkbox" id="sp3"><label for="sp3">Batch similar tasks rather than context-switching</label></li>
+          <li><input type="checkbox" id="sp4"><label for="sp4">Do one physical renewal activity before major tasks</label></li>
+          <li><input type="checkbox" id="sp5"><label for="sp5">Check job boards at set times only, not constantly</label></li>
+          <li><input type="checkbox" id="sp6"><label for="sp6">Rate each opportunity with a body-based YES/NO check</label></li>
+          <li><input type="checkbox" id="sp7"><label for="sp7">Set a weekly energy check across all four dimensions</label></li>
+          <li><input type="checkbox" id="sp8"><label for="sp8">Protect one non-search connection per week</label></li>
+        </ul>
+      </div>
     </div>
-  </div>
 
-  <!-- ═══════════════════════════════════════ STEP 7 -->
-  <div class="step-section" id="step-7">
-    <h1>The Job Search as Energy Management</h1>
-    <p>Here's something no one tells you about looking for work: the job search itself is an energy-intensive project. And most people approach it like they have to spend everything they have, every day, to prove they deserve to find something.</p>
-    <div class="box-insight">
-      <h3>This Is the Trap</h3>
-      <p>Sending 40 applications from a place of desperation produces different results than sending 5 from a place of clarity. Doing a networking call when you're in shutdown produces a different impression than doing one when you've rested and regulated.</p>
-      <p style="margin-bottom:0;">Quality of energy > quantity of effort. Always.</p>
-    </div>
-    <h2>Sustainable Search Practices</h2>
-    <p>Check the practices below that feel possible for you to try in the next two weeks:</p>
-
-    <ul class="check-list" id="sustainable-list">
-      <li><input type="checkbox" id="sp1"> <label for="sp1">Set specific "search hours" rather than letting it bleed into all day</label></li>
-      <li><input type="checkbox" id="sp2"> <label for="sp2">Take at least one full day off from job search activities per week</label></li>
-      <li><input type="checkbox" id="sp3"> <label for="sp3">Batch similar tasks (applications, emails, research) rather than context-switching</label></li>
-      <li><input type="checkbox" id="sp4"> <label for="sp4">Do one physical renewal activity before major search tasks (walk, stretch, breathe)</label></li>
-      <li><input type="checkbox" id="sp5"> <label for="sp5">Check job boards at set times rather than constantly throughout the day</label></li>
-      <li><input type="checkbox" id="sp6"> <label for="sp6">Rate each opportunity with a body-based YES/NO check before investing time</label></li>
-      <li><input type="checkbox" id="sp7"> <label for="sp7">Set a weekly "energy check" to honestly assess which dimension needs attention</label></li>
-      <li><input type="checkbox" id="sp8"> <label for="sp8">Protect at least one connection per week that has nothing to do with job search</label></li>
-    </ul>
-
-    <div class="box-reflect">
-      <h3>What would a sustainable week actually look like for you?</h3>
-      <p>Not the week you think you should have. The week that would actually restore and sustain you while keeping the search moving forward.</p>
+    <!-- ── 15: Ideal week ── -->
+    <div class="step" id="step-15">
+      <span class="tag">Sustainable Search</span>
+      <h1>Your Sustainable Week</h1>
+      <p style="flex-shrink:0;">Not the week you think you should have. The week that would actually restore you while keeping the search moving.</p>
       <textarea id="reflect-sustainable" placeholder="Your reflections are saved privately on your device only..."></textarea>
     </div>
-    <div class="nav-buttons">
-      <button class="btn-secondary" onclick="goToStep(6)">← Back</button>
-      <button class="btn-primary" onclick="goToStep(8)">Continue →</button>
-    </div>
-  </div>
 
-  <!-- ═══════════════════════════════════════ STEP 8 -->
-  <div class="step-section" id="step-8">
-    <h1>Your One Boundary Experiment</h1>
-    <p>Research on behavior change tells us that one small, specific, practiced commitment outperforms sweeping resolutions every time. So instead of overhauling everything, we're going to pick one boundary to experiment with this week.</p>
-    <div class="box-key-concept">
-      <h3>💡 Why "Experiment"?</h3>
-      <p>Calling it an experiment takes the pressure off. You're not making a permanent declaration. You're trying something for one week to see what happens to your energy. That's all.</p>
+    <!-- ── 16: Experiment picker ── -->
+    <div class="step" id="step-16">
+      <span class="tag">Boundary Experiment</span>
+      <h1>Your One Boundary Experiment</h1>
+      <p style="flex-shrink:0;">One small, specific commitment outperforms sweeping resolutions every time. One thing for one week.</p>
+      <p style="font-size:0.82rem; font-weight:700; color:oklch(22% 0.04 220); flex-shrink:0; margin-bottom:2px;">Choose your focus area:</p>
+      <div class="b-grid">
+        <div class="b-card" id="exp-time" onclick="pickExp('exp-time','Time')">
+          <h4>⏱ Time</h4>
+          <p>When or how long you're available</p>
+        </div>
+        <div class="b-card" id="exp-comm" onclick="pickExp('exp-comm','Communication')">
+          <h4>📱 Communication</h4>
+          <p>Who or how you respond</p>
+        </div>
+        <div class="b-card" id="exp-emot" onclick="pickExp('exp-emot','Emotional')">
+          <h4>💛 Emotional</h4>
+          <p>Whose feelings you absorb</p>
+        </div>
+        <div class="b-card" id="exp-fin" onclick="pickExp('exp-fin','Financial')">
+          <h4>💰 Financial</h4>
+          <p>What you'll agree to financially</p>
+        </div>
+      </div>
+      <input type="hidden" id="sel-exp" value="">
+      <div class="surface-gentle" style="margin-top:auto;">Tap a card to select, then describe your experiment on the next screen.</div>
     </div>
-    <p>Choose one boundary type to focus on this week:</p>
-    <div class="boundary-grid">
-      <div class="boundary-card" id="exp-time" onclick="selectExperiment('exp-time', 'Time')">
-        <h4>⏱ Time Boundary</h4>
-        <p>Something about when or how long you're available</p>
-      </div>
-      <div class="boundary-card" id="exp-comm" onclick="selectExperiment('exp-comm', 'Communication')">
-        <h4>📱 Communication Boundary</h4>
-        <p>Something about who or how you respond</p>
-      </div>
-      <div class="boundary-card" id="exp-emot" onclick="selectExperiment('exp-emot', 'Emotional')">
-        <h4>💛 Emotional Boundary</h4>
-        <p>Something about whose feelings you will and won't absorb</p>
-      </div>
-      <div class="boundary-card" id="exp-fin" onclick="selectExperiment('exp-fin', 'Financial')">
-        <h4>💰 Financial Boundary</h4>
-        <p>Something about what you will and won't agree to financially</p>
-      </div>
-    </div>
-    <input type="hidden" id="selected-experiment" value="">
 
-    <div class="box-reflect">
-      <h3>Describe Your Boundary Experiment</h3>
-      <p>Be specific. What exactly will you do or not do? When? With whom? What will you say if it comes up?</p>
-      <textarea id="reflect-experiment" placeholder="This week I will... (be as specific as possible...e.g. 'I will not check job boards after 6pm. If I feel the urge, I will do 3 physiological sighs first.')"></textarea>
-      <button class="helper-toggle" onclick="toggleHelper('helper-exp')">Not sure where to start? ▾</button>
-      <div class="helper-content" id="helper-exp">
-        The more specific, the better. Vague commitments fall apart under pressure. "I'll be better with time" is not a boundary. "I will not answer career-related calls on Sunday" is. Think about: What specifically will you stop, start, or limit? What will you say if someone pushes back? What signal will tell you the boundary is working?
+    <!-- ── 17: Experiment details ── -->
+    <div class="step" id="step-17">
+      <span class="tag">Boundary Experiment</span>
+      <h1>Describe Your Experiment</h1>
+      <div class="surface surface-warm">
+        <h3>💡 Specificity is what makes it hold</h3>
+        <p style="margin:0;">"I'll be better with time" isn't a boundary. "I won't answer career calls on Sundays" is. Vague commitments fall apart under pressure.</p>
+      </div>
+      <p style="flex-shrink:0; font-size:0.82rem;">What exactly will you do or not do? When? With whom?</p>
+      <textarea id="reflect-experiment" placeholder="This week I will... (e.g. 'I will not check job boards after 6pm. If I feel the urge, I'll do 3 physiological sighs first.')"></textarea>
+      <button class="helper-btn" onclick="toggleHelper('h-exp')">Not sure where to start? ▾</button>
+      <div class="helper-panel" id="h-exp">What specifically will you stop, start, or limit? What will you say if someone pushes back? What signal will tell you the boundary is working?</div>
+    </div>
+
+    <!-- ── 18: Energy insight ── -->
+    <div class="step" id="step-18">
+      <span class="tag">Key Insight</span>
+      <h1>Energy Is Information</h1>
+      <div class="surface-dark">
+        <h3>Not a Weakness Signal</h3>
+        <p>When you're running low, your body isn't failing you. It's giving you data: this is unsustainable. Something needs to change.</p>
+        <p style="margin-bottom:0;">People who build careers that last learn to listen to that data rather than override it.</p>
+      </div>
+      <p style="flex-shrink:0; margin-top:4px;">This is not soft advice. This is strategy. Regulated people make better decisions, build better relationships, and interview better. Your energy management is your competitive advantage.</p>
+      <div class="surface surface-sage" style="margin-top:auto;">
+        <p style="font-size:0.79rem; color:oklch(38% 0.08 125); margin:0; font-weight:600;">One more reflection, then your summary →</p>
       </div>
     </div>
-    <div class="nav-buttons">
-      <button class="btn-secondary" onclick="goToStep(7)">← Back</button>
-      <button class="btn-primary" onclick="goToStep(9)">Continue →</button>
-    </div>
-  </div>
 
-  <!-- ═══════════════════════════════════════ STEP 9 -->
-  <div class="step-section" id="step-9">
-    <h1>Energy Is Information</h1>
-    <p>Here's the shift I want to leave you with. Most of us were taught that energy is something you push through, override, or willpower your way past. The job search makes that worse...there's a cultural story that says the more depleted you are, the harder you're trying.</p>
-    <div class="box-insight">
-      <h3>Energy Is Not a Weakness Signal</h3>
-      <p>When you're running low, your body isn't failing you. It's giving you data. It's telling you: this is unsustainable. Something needs to change. A boundary has been crossed, or one needs to be built.</p>
-      <p style="margin-bottom:0;">People who find work that is genuinely right for them...and build careers that last...learn to listen to that data rather than override it.</p>
-    </div>
-    <p>This is not soft advice. This is strategy. Regulated people make better decisions, build better relationships, and interview better. Your energy management is your competitive advantage.</p>
-    <div class="box-reflect">
-      <h3>Final Reflection: What Has Shifted?</h3>
-      <p>As you complete this module, what feels different...even slightly...about how you understand your energy and your boundaries? What's one thing you want to remember from today?</p>
+    <!-- ── 19: Final reflection ── -->
+    <div class="step" id="step-19">
+      <span class="tag">Final Reflection</span>
+      <h1>What Has Shifted?</h1>
+      <p style="flex-shrink:0;">What feels different — even slightly — about how you understand your energy and boundaries? What's one thing to remember?</p>
       <textarea id="reflect-final" placeholder="Your reflections are saved privately on your device only..."></textarea>
+      <div class="surface surface-sage" style="flex-shrink:0;">
+        <h3 style="color:oklch(38% 0.08 125);">🌱 What's Next</h3>
+        <p style="font-size:0.79rem; margin:0;">You've cleared the ground. Next session: move from protection and recovery into active rebuilding.</p>
+      </div>
     </div>
 
-    <div class="box-next">
-      <h3>🌱 What's Next</h3>
-      <p>In the next session, you'll build on everything you've established...moving from protection and recovery into active rebuilding. You've done the hard work of clearing the ground. Now we start building on it.</p>
+    <!-- ── 20: Completion ── -->
+    <div class="step" id="step-20">
+      <h1 style="text-align:center; flex-shrink:0;">You Showed Up</h1>
+      <p style="text-align:center; font-size:0.8rem; color:oklch(52% 0.03 220); flex-shrink:0;">Every time you do this work, you build something that can't be taken from you.</p>
+
+      <div class="surface-dark">
+        <h3>What You Explored Today</h3>
+        <p style="margin:0; font-size:0.79rem;">Energy assessment across all four dimensions · What depletes and restores you · Resentment mapping · Body-based decision making · One specific boundary commitment.</p>
+      </div>
+
+      <div style="background:oklch(22% 0.04 220); border-radius:9px; padding:14px 13px; text-align:center; flex-shrink:0;">
+        <p class="eyebrow" style="margin-bottom:5px;">Before You Go</p>
+        <h3 style="color:oklch(98% 0.005 220); margin-bottom:5px;">Keep what you wrote today.</h3>
+        <p style="font-size:0.78rem; color:oklch(74% 0.015 220); margin-bottom:10px;">Your reflections only live here, on this screen.</p>
+        <button onclick="downloadPDF()" class="btn-accent">⬇ Download My Reflections as PDF</button>
+        <p style="font-size:0.71rem; color:oklch(52% 0.02 220); margin-top:6px;">Saved privately. Nothing leaves this page.</p>
+      </div>
+
+      <div class="surface-mid">
+        <h3>You don't have to process this alone.</h3>
+        <p style="margin-bottom:9px;">Free drop-in sessions: a space to talk, breathe, and be in community.</p>
+        <a href="https://www.unbrokenpathways.org/registration" target="_blank" class="cta-link">Join a Drop-In Session →</a>
+      </div>
     </div>
 
-    <div class="nav-buttons">
-      <button class="btn-secondary" onclick="goToStep(8)">← Back</button>
-      <button class="btn-primary" onclick="goToStep(10)">Continue to Summary →</button>
-    </div>
+  </div><!-- /content -->
+
+  <!-- ════ NAV ════ -->
+  <div class="nav">
+    <button class="btn btn-ghost" id="btn-back" onclick="goBack()" style="visibility:hidden;">← Back</button>
+    <button class="btn btn-primary" id="btn-next" onclick="goNext()">Continue →</button>
   </div>
 
-  <!-- ═══════════════════════════════════════ STEP 10 -->
-  <div class="step-section" id="step-10">
-    <h1>You Showed Up</h1>
-    <p>That matters. Every time you do this work, you're building something that can't be taken from you.</p>
+  <div class="copy">Created with care by Places to Thrive, Inc. © 2025 | The UnBroken Project | unbrokenpathways.org</div>
 
-    <!-- What you learned -->
-    <div class="box-insight">
-      <h3>What You Explored Today</h3>
-      <p style="margin-bottom:10px;">You assessed your energy honestly across all four dimensions... named what depletes and restores you... mapped where resentment is pointing to unprotected boundaries... practiced letting your body guide decisions... and made one specific boundary commitment for the week ahead.</p>
-      <p style="margin-bottom:0;">That's not small work. That's the foundation of a sustainable search.</p>
-    </div>
-
-    <!-- What's coming next -->
-    <div class="box-next">
-      <h3>🌱 What's Coming Next</h3>
-      <p style="margin-bottom:0;">With nervous system regulation and self-awareness established, you can now safely explore what meaningful work looks like for you specifically... building authentic connections along the way.</p>
-    </div>
-
-    <!-- Download card -->
-    <div style="background: linear-gradient(135deg, #203445, #2d5068); border-radius: 10px; padding: 32px 24px; text-align: center; margin: 24px 0;">
-      <p style="font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 12px;">Before You Go</p>
-      <h3 style="color: white; font-size: 1.4rem; margin-bottom: 12px;">Keep what you wrote today.</h3>
-      <p style="color: rgba(255,255,255,0.8); margin-bottom: 20px;">Your reflections only live here, on this screen. Download a copy to hold onto... for yourself, for your therapist, for whatever comes next.</p>
-      <button onclick="downloadPDF()" style="background: #acc95d; color: #203445; border: none; padding: 16px 32px; border-radius: 6px; font-size: 1rem; font-weight: 700; cursor: pointer; width: 100%; max-width: 360px; display: block; margin: 0 auto 12px;">⬇ Download My Reflections as PDF</button>
-      <p style="color: rgba(255,255,255,0.45); font-size: 0.8rem; margin: 0;">Saved privately on your device. Nothing leaves this page.</p>
-    </div>
-
-    <!-- Drop-in CTA -->
-    <div style="background: #2d5068; border-radius: 10px; padding: 28px 24px; text-align: center; margin: 0 0 24px;">
-      <h3 style="color: white; font-size: 1.2rem; margin-bottom: 10px;">You don't have to process this alone.</h3>
-      <p style="color: rgba(255,255,255,0.8); margin-bottom: 20px;">Our free drop-in sessions are a space to talk, breathe, and be in community with others who understand this.</p>
-      <a href="https://www.unbrokenpathways.org/registration" target="_blank" style="display: inline-block; background: #5da0af; color: white; padding: 14px 28px; border-radius: 6px; text-decoration: none; font-weight: 700; font-size: 1rem;">Join a Drop-In Session →</a>
-    </div>
-
-    <div class="nav-buttons">
-      <button class="btn-secondary" onclick="goToStep(9)">← Back</button>
-      <span></span>
-    </div>
-  </div>
-
-</div><!-- /container -->
-
-<div style="text-align:center; font-size:12px; color:rgba(255,255,255,0.45); padding: 16px 20px 24px; line-height:1.8;">
-  Created with care by Places to Thrive, Inc. © 2025 | The UnBroken Project | unbrokenpathways.org
-</div>
+</div><!-- /shell -->
 
 <script>
-  // ── Navigation ──────────────────────────────────────────
-  const TOTAL_STEPS = 10;
-  let currentStep = 1;
+// ── Navigation ─────────────────────────────────────────────────────────────
+const TOTAL = 20;
+let cur = 1;
 
-  function scrollToTop() {
-    window.scrollTo(0, 0);
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
-    const c = document.querySelector('.container');
-    if (c) c.scrollTop = 0;
-  }
+function goTo(n) {
+  document.getElementById('step-' + cur).classList.remove('active');
+  cur = n;
+  document.getElementById('step-' + cur).classList.add('active');
+  document.getElementById('prog').style.width  = Math.round((cur / TOTAL) * 100) + '%';
+  document.getElementById('step-ctr').textContent = 'Step ' + cur + ' of ' + TOTAL;
+  document.getElementById('btn-back').style.visibility = cur > 1 ? 'visible' : 'hidden';
+  const nxt = document.getElementById('btn-next');
+  nxt.style.display = cur === TOTAL ? 'none' : '';
+}
 
-  function goToStep(n) {
-    document.getElementById('step-' + currentStep).classList.remove('active');
-    currentStep = n;
-    document.getElementById('step-' + currentStep).classList.add('active');
-    const pct = Math.round((n / TOTAL_STEPS) * 100);
-    document.getElementById('progress-bar').style.width = pct + '%';
-    document.getElementById('step-label').textContent = 'Step ' + n + ' of ' + TOTAL_STEPS;
-    document.getElementById('pct-label').textContent = pct + '%';
-    setTimeout(scrollToTop, 50);
-  }
+function goNext() { if (cur < TOTAL) goTo(cur + 1); }
+function goBack() { if (cur > 1)    goTo(cur - 1); }
 
-  // ── Helpers ──────────────────────────────────────────
-  function toggleHelper(id) {
-    const el = document.getElementById(id);
-    el.classList.toggle('open');
-  }
+// ── Helpers ─────────────────────────────────────────────────────────────────
+function toggleHelper(id) { document.getElementById(id).classList.toggle('open'); }
 
-  // ── Energy sliders ──────────────────────────────────
-  function updateSlider(dim) {
-    const val = document.getElementById(dim + '-slider').value;
-    document.getElementById(dim + '-score').textContent = val;
-    document.getElementById(dim + '-bar').style.width = (val * 10) + '%';
-  }
+// ── Energy sliders ──────────────────────────────────────────────────────────
+function updateSlider(dim) {
+  const v = document.getElementById(dim + '-slider').value;
+  document.getElementById(dim + '-score').textContent = v;
+  document.getElementById(dim + '-bar').style.width   = (v * 10) + '%';
+}
 
-  function scoreEnergy() {
-    const phys = parseInt(document.getElementById('phys-slider').value);
-    const emot = parseInt(document.getElementById('emot-slider').value);
-    const ment = parseInt(document.getElementById('ment-slider').value);
-    const spir = parseInt(document.getElementById('spir-slider').value);
-    const avg = (phys + emot + ment + spir) / 4;
-    const lowest = Math.min(phys, emot, ment, spir);
-    const dimMap = { phys: 'Physical', emot: 'Emotional', ment: 'Mental', spir: 'Spiritual' };
-    const lowestDim = Object.entries({phys, emot, ment, spir}).sort((a,b) => a[1]-b[1])[0];
+function scoreEnergy() {
+  const p = +document.getElementById('phys-slider').value;
+  const e = +document.getElementById('emot-slider').value;
+  const m = +document.getElementById('ment-slider').value;
+  const s = +document.getElementById('spir-slider').value;
+  const avg = (p + e + m + s) / 4;
+  const labels = { phys: 'Physical', emot: 'Emotional', ment: 'Mental', spir: 'Spiritual' };
+  const lowest = Object.entries({ phys: p, emot: e, ment: m, spir: s }).sort((a,b) => a[1]-b[1])[0];
+  let badge, cls, msg;
+  if (avg >= 7)      { badge = 'Strong';   cls = 'badge-strong';   msg = 'You have a foundation to work from. Boundaries will protect it.'; }
+  else if (avg >= 4) { badge = 'Moderate'; cls = 'badge-moderate'; msg = 'Functional but not sustainable. This work is well-timed.'; }
+  else               { badge = 'Depleted'; cls = 'badge-depleted'; msg = 'You\'re carrying a heavy load. That you showed up here matters. We\'ll go gently.'; }
+  const el = document.getElementById('energy-result');
+  el.style.display = 'block';
+  el.innerHTML = `<div class="surface-dark" style="margin-top:8px;"><span class="score-badge ${cls}">${badge}</span><h3 style="color:oklch(98% 0.005 220); margin-bottom:4px;">Overall: ${avg.toFixed(1)} / 10</h3><p>${msg}</p><p style="margin:0; font-size:0.79rem;"><strong>Lowest:</strong> ${labels[lowest[0]]} (${lowest[1]}/10) — needs the most boundary protection.</p></div>`;
+}
 
-    let badge, badgeClass, interpretation;
-    if (avg >= 7) {
-      badge = 'Strong'; badgeClass = 'badge-strong';
-      interpretation = 'Your energy reserves are in reasonable shape right now. That doesn\'t mean you don\'t need boundaries...it means you have a foundation to work from.';
-    } else if (avg >= 4) {
-      badge = 'Moderate'; badgeClass = 'badge-moderate';
-      interpretation = 'You\'re running, but not at full capacity. This is the most common state during job search...functional but not sustainable. The work in this module is well-timed.';
-    } else {
-      badge = 'Depleted'; badgeClass = 'badge-depleted';
-      interpretation = 'You\'re carrying a heavy load right now. This isn\'t a judgment...it\'s information. The fact that you showed up for this module matters. We\'ll go gently.';
-    }
+// ── Boundary experiment ─────────────────────────────────────────────────────
+function pickExp(id, label) {
+  ['exp-time','exp-comm','exp-emot','exp-fin'].forEach(c => document.getElementById(c).classList.remove('chosen'));
+  document.getElementById(id).classList.add('chosen');
+  document.getElementById('sel-exp').value = label;
+}
 
-    const resultDiv = document.getElementById('energy-result');
-    resultDiv.style.display = 'block';
-    resultDiv.innerHTML = `
-      <div class="box-insight" style="margin-top:16px;">
-        <span class="score-badge ${badgeClass}">${badge}</span>
-        <h3 style="color:white; margin-bottom:8px;">Overall Energy: ${avg.toFixed(1)} / 10</h3>
-        <p>${interpretation}</p>
-        <p style="margin-bottom:0;"><strong>Your lowest dimension:</strong> ${dimMap[lowestDim[0]]} (${lowestDim[1]}/10)...this is where your boundaries need the most protection right now.</p>
-      </div>`;
-  }
+// ── Meditation ──────────────────────────────────────────────────────────────
+let medRaf = null, medPlaying = false;
 
-  // ── Boundary experiment selector ───────────────────
-  function selectExperiment(id, label) {
-    ['exp-time','exp-comm','exp-emot','exp-fin'].forEach(c => {
-      document.getElementById(c).classList.remove('selected');
-    });
-    document.getElementById(id).classList.add('selected');
-    document.getElementById('selected-experiment').value = label;
-  }
+function getMedDur() {
+  const a = document.getElementById('meditation-audio');
+  return (a && a.duration && isFinite(a.duration)) ? a.duration : 480;
+}
 
-  // ── Meditation ──────────────────────────────────────
-  let medTimer = null;   // holds requestAnimationFrame id
-  let medPlaying = false;
-
-  // FIX 1: Read actual duration from audio element — never hardcode.
-  // Falls back to 480 (8 min) until metadata is available.
-  function getMedTotal() {
-    const audio = document.getElementById('meditation-audio');
-    return (audio && audio.duration && isFinite(audio.duration)) ? audio.duration : 480;
-  }
-
-  // FIX 4: Wire up audio events after DOM is ready.
-  document.addEventListener('DOMContentLoaded', function () {
-    const audio = document.getElementById('meditation-audio');
-
-    // Update time display as soon as browser knows the real duration.
-    audio.addEventListener('loadedmetadata', function () {
-      resetMeditation();
-    });
-
-    // FIX 4: 'ended' fires reliably across all browsers including iOS Safari.
-    audio.addEventListener('ended', function () {
-      cancelAnimationFrame(medTimer);
-      medPlaying = false;
-      document.getElementById('med-icon').innerHTML = '<path d="M8 5v14l11-7z"/>';
-      updateMedDisplay();
-    });
-  });
-
-  const medScript = [
-    { time: 0,   phase: 'Grounding',       text: 'Find a comfortable position. Let your feet settle flat on the floor if you\'re seated, or let your body soften if you\'re lying down. Take one slow breath in... and release it fully.' },
-    { time: 30,  phase: 'Settling',        text: 'Allow your eyes to close, or soften your gaze downward. You don\'t need to do anything right now. Just notice the weight of your body being supported. You are held.' },
-    { time: 60,  phase: 'Body Scan',       text: 'Slowly scan from the top of your head downward. Notice without judgment...warmth, tension, heaviness, lightness. You\'re not trying to change anything. You\'re just making contact with your body.' },
-    { time: 120, phase: 'Finding Neutral', text: 'Bring your attention to the center of your chest and your belly. Breathe naturally. Notice what neutral feels like right now...the baseline of your body, with nothing being asked of it.' },
-    { time: 180, phase: 'YES Signal',      text: 'Now bring to mind something you know...without question...is right for you. A person you love. A moment of genuine belonging. A piece of work that felt truly aligned. Hold it gently... and notice: where do you feel the YES in your body? Warmth? Openness? Expansion? Mark that location.' },
-    { time: 240, phase: 'NO Signal',       text: 'Now bring to mind something you know, in your gut, is not right for you. Something that has felt off, draining, misaligned. Don\'t analyze it...just feel it. Where does the NO live in your body? Tightness? Contraction? A pulling away? Mark that location too.' },
-    { time: 300, phase: 'Testing',         text: 'Now bring to mind one real opportunity, relationship, or decision you are currently facing. Hold it lightly. Don\'t think about it...feel it. Is this more like your YES, or your NO? What is your body telling you that your mind might be arguing with?' },
-    { time: 360, phase: 'Integration',     text: 'Take a breath. Whatever you noticed is information. You don\'t have to act on it right now. But it belongs to you...your body\'s intelligence, available whenever you need it.' },
-    { time: 420, phase: 'Return',          text: 'Gently begin to return your awareness to the room. Wiggle your fingers and toes. When you\'re ready, open your eyes. Take a moment before you write...let the experience settle.' }
-  ];
-
-  function getCurrentScript(elapsed) {
-    let current = medScript[0];
-    for (let i = medScript.length - 1; i >= 0; i--) {
-      if (elapsed >= medScript[i].time) { current = medScript[i]; break; }
-    }
-    return current;
-  }
-
-  // FIX 2 & 3: Always read currentTime directly from the audio element.
-  // This stays accurate even when the browser throttles the tab on mobile.
-  function updateMedDisplay() {
-    const audio = document.getElementById('meditation-audio');
-    const elapsed = (audio && audio.currentTime) ? audio.currentTime : 0;
-    const total = getMedTotal();
-    const em = Math.floor(elapsed / 60);
-    const es = Math.floor(elapsed % 60);
-    const tm = Math.floor(total / 60);
-    const ts = Math.floor(total % 60);
-    document.getElementById('med-time').textContent =
-      `${em}:${String(es).padStart(2,'0')} / ${tm}:${String(ts).padStart(2,'0')}`;
-    const pct = (elapsed / total) * 100;
-    document.getElementById('med-progress').style.width = Math.min(pct, 100) + '%';
-    const script = getCurrentScript(Math.floor(elapsed));
-    document.getElementById('med-display').innerHTML =
-      `<div class="med-phase-label">${script.phase}</div>${script.text}`;
-  }
-
-  function toggleMeditation() {
-    const audio = document.getElementById('meditation-audio');
-    const icon  = document.getElementById('med-icon');
-
-    // If ended or past end, reset and restart
-    if (audio.ended || audio.currentTime >= getMedTotal() - 0.5) {
-      resetMeditation();
-      return;
-    }
-
-    medPlaying = !medPlaying;
-
-    if (medPlaying) {
-      // FIX 4: .play() returns a Promise on modern browsers.
-      // Catching rejection handles iOS autoplay policy blocks.
-      const playPromise = audio.play();
-      if (playPromise !== undefined) {
-        playPromise.then(startTick).catch(function () {
-          medPlaying = false; // blocked by browser — revert state
-        });
-      } else {
-        startTick();
-      }
-    } else {
-      audio.pause();
-      cancelAnimationFrame(medTimer);
-      icon.innerHTML = '<path d="M8 5v14l11-7z"/>';
-    }
-  }
-
-  function startTick() {
-    const icon = document.getElementById('med-icon');
-    icon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
-    // FIX 2 & 3: Use requestAnimationFrame — smooth and never drifts from real audio time.
-    function tick() {
-      if (!medPlaying) return;
-      updateMedDisplay();
-      medTimer = requestAnimationFrame(tick);
-    }
-    medTimer = requestAnimationFrame(tick);
-  }
-
-  function resetMeditation() {
-    const audio = document.getElementById('meditation-audio');
-    audio.pause();
-    audio.currentTime = 0;
-    cancelAnimationFrame(medTimer);
+document.addEventListener('DOMContentLoaded', () => {
+  const a = document.getElementById('meditation-audio');
+  a.addEventListener('loadedmetadata', resetMed);
+  a.addEventListener('ended', () => {
+    cancelAnimationFrame(medRaf);
     medPlaying = false;
-    const total = getMedTotal();
-    const tm = Math.floor(total / 60);
-    const ts = Math.floor(total % 60);
     document.getElementById('med-icon').innerHTML = '<path d="M8 5v14l11-7z"/>';
-    document.getElementById('med-time').textContent =
-      '0:00 / ' + tm + ':' + String(ts).padStart(2,'0');
-    document.getElementById('med-progress').style.width = '0%';
-    document.getElementById('med-display').innerHTML =
-      '<div class="med-phase-label">Ready to begin</div>Press play to start the guided meditation. Find a comfortable position...seated or lying down...and allow your eyes to soften or close.';
-  }
-
-  // FIX 3: Seek correctly uses real duration AND resumes playback if already playing.
-  function seekMeditation(e) {
-    const audio = document.getElementById('meditation-audio');
-    const track = document.getElementById('med-track');
-    const rect  = track.getBoundingClientRect();
-    const pct   = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-    audio.currentTime = pct * getMedTotal();
     updateMedDisplay();
-    if (medPlaying) {
-      audio.play().catch(function () {});
-    }
+  });
+});
+
+const medScript = [
+  { time:0,   phase:'Grounding',       text:'Find a comfortable position. Let your feet settle flat on the floor, or let your body soften if lying down. One slow breath in... and release it fully.' },
+  { time:30,  phase:'Settling',        text:'Allow your eyes to close, or soften your gaze downward. Notice the weight of your body being supported. You don\'t need to do anything right now.' },
+  { time:60,  phase:'Body Scan',       text:'Slowly scan from the top of your head downward. Notice without judgment — warmth, tension, heaviness, lightness. Just making contact.' },
+  { time:120, phase:'Finding Neutral', text:'Bring attention to your chest and belly. Breathe naturally. Notice what neutral feels like — the baseline of your body with nothing being asked of it.' },
+  { time:180, phase:'YES Signal',      text:'Bring to mind something you know, without question, is right for you. A person you love. A moment of genuine belonging. Where do you feel the YES? Warmth? Expansion? Mark that location.' },
+  { time:240, phase:'NO Signal',       text:'Now bring to mind something you know in your gut is not right. Don\'t analyze — just feel. Where does the NO live? Tightness? Contraction? A pulling away? Mark that location too.' },
+  { time:300, phase:'Testing',         text:'Bring to mind one real opportunity or decision you\'re currently facing. Hold it lightly. Don\'t think about it — feel it. Is this more like your YES, or your NO?' },
+  { time:360, phase:'Integration',     text:'Take a breath. Whatever you noticed is information. You don\'t have to act on it right now. It belongs to you — available whenever you need it.' },
+  { time:420, phase:'Return',          text:'Gently return your awareness to the room. Wiggle your fingers and toes. When ready, open your eyes. Let the experience settle before you write.' }
+];
+
+function getScript(t) {
+  let s = medScript[0];
+  for (let i = medScript.length-1; i >= 0; i--) { if (t >= medScript[i].time) { s = medScript[i]; break; } }
+  return s;
+}
+
+function updateMedDisplay() {
+  const a = document.getElementById('meditation-audio');
+  const elapsed = (a && a.currentTime) ? a.currentTime : 0;
+  const total   = getMedDur();
+  const fmt = (n) => Math.floor(n/60) + ':' + String(Math.floor(n%60)).padStart(2,'0');
+  document.getElementById('med-time').textContent   = fmt(elapsed) + ' / ' + fmt(total);
+  document.getElementById('med-prog').style.width   = Math.min((elapsed/total)*100, 100) + '%';
+  const s = getScript(Math.floor(elapsed));
+  document.getElementById('med-display').innerHTML  = `<div class="med-phase">${s.phase}</div>${s.text}`;
+}
+
+function toggleMed() {
+  const a = document.getElementById('meditation-audio');
+  if (a.ended || a.currentTime >= getMedDur() - 0.5) { resetMed(); return; }
+  medPlaying = !medPlaying;
+  if (medPlaying) {
+    const p = a.play();
+    if (p !== undefined) p.then(startTick).catch(() => { medPlaying = false; });
+    else startTick();
+  } else {
+    a.pause(); cancelAnimationFrame(medRaf);
+    document.getElementById('med-icon').innerHTML = '<path d="M8 5v14l11-7z"/>';
   }
+}
 
-  // ── PDF Download ─────────────────────────────────────
-  function downloadPDF() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF({ unit: 'pt', format: 'letter' });
-    const margin = 60;
-    const pageW = doc.internal.pageSize.getWidth();
-    const maxW = pageW - margin * 2;
-    let y = 60;
+function startTick() {
+  document.getElementById('med-icon').innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+  (function tick() { if (!medPlaying) return; updateMedDisplay(); medRaf = requestAnimationFrame(tick); })();
+}
 
-    function checkPage(needed) {
-      if (y + needed > doc.internal.pageSize.getHeight() - 60) {
-        doc.addPage(); y = 60;
-      }
-    }
+function resetMed() {
+  const a = document.getElementById('meditation-audio');
+  a.pause(); a.currentTime = 0; cancelAnimationFrame(medRaf); medPlaying = false;
+  const total = getMedDur(), fmt = (n) => Math.floor(n/60) + ':' + String(Math.floor(n%60)).padStart(2,'0');
+  document.getElementById('med-icon').innerHTML = '<path d="M8 5v14l11-7z"/>';
+  document.getElementById('med-time').textContent = '0:00 / ' + fmt(total);
+  document.getElementById('med-prog').style.width = '0%';
+  document.getElementById('med-display').innerHTML = '<div class="med-phase">Ready to Begin</div>Press play. Find a comfortable position and let your eyes soften or close.';
+}
 
-    function addHeading(text, size = 16) {
-      checkPage(size + 16);
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(size);
-      doc.setTextColor(32, 52, 69);
-      doc.text(text, margin, y);
-      y += size + 10;
-    }
+function seekMed(e) {
+  const a = document.getElementById('meditation-audio');
+  const t = document.getElementById('med-track');
+  const r = t.getBoundingClientRect();
+  a.currentTime = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * getMedDur();
+  updateMedDisplay();
+  if (medPlaying) a.play().catch(() => {});
+}
 
-    function addBody(text, size = 11) {
-      if (!text || !text.trim()) return;
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(size);
-      doc.setTextColor(60, 60, 60);
-      const lines = doc.splitTextToSize(text, maxW);
-      checkPage(lines.length * (size + 4) + 12);
-      doc.text(lines, margin, y);
-      y += lines.length * (size + 4) + 12;
-    }
-
-    function addLabel(text) {
-      checkPage(20);
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(10);
-      doc.setTextColor(93, 160, 175);
-      doc.text(text.toUpperCase(), margin, y);
-      y += 16;
-    }
-
-    function addDivider() {
-      checkPage(16);
-      doc.setDrawColor(220, 220, 220);
-      doc.line(margin, y, pageW - margin, y);
-      y += 16;
-    }
-
-    // Header
-    doc.setFillColor(32, 52, 69);
-    doc.rect(0, 0, pageW, 48, 'F');
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(18);
-    doc.setTextColor(255, 255, 255);
-    doc.text('UnBroken: Boundaries & Energy Management', margin, 30);
-    doc.setFontSize(10);
-    doc.setFont('helvetica', 'normal');
-    doc.text('My Reflections · ' + new Date().toLocaleDateString(), margin, 42);
-    y = 70;
-
-    // Energy scores
-    addHeading('My Energy Assessment');
-    const dims = [
-      ['Physical', 'phys'], ['Emotional', 'emot'], ['Mental', 'ment'], ['Spiritual', 'spir']
-    ];
-    dims.forEach(([name, id]) => {
-      const val = document.getElementById(id + '-slider').value;
-      addBody(`${name}: ${val} / 10`);
-    });
-    addDivider();
-
-    // Reflections
-    const fields = [
-      ['Physical Energy...Depletion & Restoration', 'reflect-phys'],
-      ['Emotional Energy', 'reflect-emot'],
-      ['Mental Energy', 'reflect-ment'],
-      ['Spiritual Energy', 'reflect-spir'],
-      ['Where is my energy leaking?', 'reflect-boundaries'],
-      ['Resentment #1...Where I feel it', 'resent-1a'],
-      ['Resentment #1...Boundary signal', 'resent-1b'],
-      ['Resentment #2...Where I feel it', 'resent-2a'],
-      ['Resentment #2...Boundary signal', 'resent-2b'],
-      ['Body Knows...What I noticed', 'reflect-body'],
-      ['Sustainable Search...My ideal week', 'reflect-sustainable'],
-      ['My Boundary Experiment', 'reflect-experiment'],
-      ['Final Reflection', 'reflect-final'],
-    ];
-    fields.forEach(([label, id]) => {
-      const val = (document.getElementById(id) || {}).value || '';
-      if (val.trim()) {
-        addLabel(label);
-        addBody(val);
-        addDivider();
-      }
-    });
-
-    // Footer
-    const pageCount = doc.internal.getNumberOfPages();
-    for (let i = 1; i <= pageCount; i++) {
-      doc.setPage(i);
-      doc.setFontSize(9);
-      doc.setTextColor(150, 150, 150);
-      doc.text('Created with care by Places to Thrive, Inc. © 2025 | The UnBroken Project | unbrokenpathways.org', margin, doc.internal.pageSize.getHeight() - 24);
-    }
-
-    doc.save('UnBroken-Boundaries-Energy-Reflections.pdf');
-  }
+// ── PDF ─────────────────────────────────────────────────────────────────────
+function downloadPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit:'pt', format:'letter' });
+  const M = 60, W = doc.internal.pageSize.getWidth(), mW = W - M*2;
+  let y = 60;
+  const chk = (n) => { if (y+n > doc.internal.pageSize.getHeight()-60) { doc.addPage(); y=60; } };
+  const head = (t, sz=13) => { chk(sz+12); doc.setFont('helvetica','bold'); doc.setFontSize(sz); doc.setTextColor(32,52,69); doc.text(t,M,y); y+=sz+10; };
+  const body = (t) => { if (!t||!t.trim()) return; doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(60,60,60); const ls=doc.splitTextToSize(t,mW); chk(ls.length*14+8); doc.text(ls,M,y); y+=ls.length*14+8; };
+  const lbl  = (t) => { chk(16); doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(93,160,175); doc.text(t.toUpperCase(),M,y); y+=14; };
+  const div  = () => { chk(12); doc.setDrawColor(210,210,210); doc.line(M,y,W-M,y); y+=12; };
+  doc.setFillColor(32,52,69); doc.rect(0,0,W,44,'F');
+  doc.setFont('helvetica','bold'); doc.setFontSize(15); doc.setTextColor(255,255,255);
+  doc.text('UnBroken: Boundaries & Energy Management', M, 26);
+  doc.setFontSize(9); doc.setFont('helvetica','normal');
+  doc.text('My Reflections · ' + new Date().toLocaleDateString(), M, 38);
+  y = 64;
+  head('My Energy Assessment');
+  [['Physical','phys'],['Emotional','emot'],['Mental','ment'],['Spiritual','spir']].forEach(([n,id]) => body(`${n}: ${document.getElementById(id+'-slider').value}/10`));
+  div();
+  [
+    ['Physical Energy: Depletion & Restoration','reflect-phys'],
+    ['Emotional Energy','reflect-emot'],
+    ['Mental Energy','reflect-ment'],
+    ['Spiritual Energy','reflect-spir'],
+    ['Where is my energy leaking?','reflect-boundaries'],
+    ['Resentment #1: Where I feel it','resent-1a'],
+    ['Resentment #1: Boundary signal','resent-1b'],
+    ['Resentment #2: Where I feel it','resent-2a'],
+    ['Resentment #2: Boundary signal','resent-2b'],
+    ['Body intelligence: What I noticed','reflect-body'],
+    ['Sustainable search: My ideal week','reflect-sustainable'],
+    ['My boundary experiment','reflect-experiment'],
+    ['Final reflection','reflect-final'],
+  ].forEach(([l,id]) => {
+    const el=document.getElementById(id); const v=el?el.value:'';
+    if (v.trim()) { lbl(l); body(v); div(); }
+  });
+  const pg = doc.internal.getNumberOfPages();
+  for (let i=1;i<=pg;i++) { doc.setPage(i); doc.setFontSize(8); doc.setTextColor(150,150,150); doc.text('Created with care by Places to Thrive, Inc. © 2025 | The UnBroken Project | unbrokenpathways.org',M,doc.internal.pageSize.getHeight()-20); }
+  doc.save('UnBroken-Boundaries-Energy-Reflections.pdf');
+}
 </script>
 </body>
 </html>
