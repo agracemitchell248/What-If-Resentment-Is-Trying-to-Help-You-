@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -710,13 +710,25 @@ input[type="range"]::-webkit-slider-thumb {
         <p style="font-size:0.75rem; color:oklch(60% 0.02 220); margin:0;">— Aimee Mitchell, UnBroken</p>
       </div>
       <p style="flex-shrink:0;">Before we map it, take a moment to reset with this short video:</p>
-      <video 
-          controls 
-          width="100%" 
-          style="max-width:560px; border-radius:8px; display:block; margin:0 auto;">
-          <source src="Resentment Is A Sign.mp4" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
+      <div class="video-wrapper" style="position:relative; max-width:560px; margin:0 auto; border-radius:8px; overflow:hidden;">
+          <video
+            id="promo-video"
+            width="100%"
+            style="display:block; border-radius:8px;"
+            playsinline
+            webkit-playsinline
+            preload="metadata">
+            <source src="Resentment Is A Sign.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <div id="play-btn-overlay" onclick="document.getElementById('promo-video').play(); this.style.display='none';" style="position:absolute; top:0; left:0; width:100%; height:100%; display:flex; align-items:center; justify-content:center; cursor:pointer; background:rgba(0,0,0,0.25);">
+            <div style="width:72px; height:72px; background:rgba(255,255,255,0.92); border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 16px rgba(0,0,0,0.3);">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <polygon points="10,6 28,16 10,26" fill="#1a1a2e"/>
+              </svg>
+            </div>
+          </div>
+        </div>
       <p style="flex-shrink:0;">Think about where resentment has shown up recently. Next: map two instances and find what boundary each points to.</p>
       <div class="surface-gentle" style="margin-top:auto;">🌿 You don't need to solve anything. Naming is the first step.</div>
     </div>
@@ -1106,5 +1118,17 @@ function downloadPDF() {
   doc.save('UnBroken-Boundaries-Energy-Reflections.pdf');
 }
 </script>
+
+  <script>
+    (function() {
+      var vid = document.getElementById('promo-video');
+      var overlay = document.getElementById('play-btn-overlay');
+      if (vid && overlay) {
+        vid.addEventListener('play', function() { overlay.style.display = 'none'; });
+        vid.addEventListener('pause', function() { overlay.style.display = 'flex'; });
+        vid.addEventListener('ended', function() { overlay.style.display = 'flex'; });
+      }
+    })();
+  </script>
 </body>
 </html>
